@@ -103,7 +103,7 @@
 									</div>
 									<a href="shop.html" class="see-all">See all features</a>
 									<div class="quick-add-to-cart">
-										<form method="post" class="cart">
+										<form method="POST" class="cart">
 											<div class="numbers-row">
 												<input type="number" id="french-hens" value="3" min="1">
 											</div>
@@ -166,7 +166,7 @@
 		<!-- main js -->
 		<script src="js/main.js"></script>
 		<!-- custom js -->
-		<script src="js/custom.js"></script>
+		<script src="js/custom.js?v=1"></script>
 		</body>
 
 		</html>

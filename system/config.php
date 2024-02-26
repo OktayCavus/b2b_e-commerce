@@ -48,6 +48,8 @@ function IP2()
     }
     return $ip;
 }
+
+// ! burdaki kod sayesinde benim session'um anlık olarak güncelleniyor
 if (@$_SESSION['login'] == @sha1(md5(IP2() . $_SESSION['code']))) {
     $logincontrol = $db->prepare("select * from bayiler where id=:id AND bayikodu=:k");
     $logincontrol->execute([
