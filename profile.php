@@ -100,7 +100,6 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                                         $image->allowed = array("image/png");
                                         $image->file_new_name_body = $rname;
 
-
                                         // ! yükleneceği yer
                                         $image->process("uploads/customer");
                                         if ($image->processed) {

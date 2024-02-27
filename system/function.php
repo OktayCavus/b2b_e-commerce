@@ -79,7 +79,7 @@ function IP()
 }
 
 
-
+// ! bu sayfalama fonksiyonu güzel 
 function pagination($s, $ptotal, $url)
 {
     global $site;
