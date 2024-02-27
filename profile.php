@@ -1,4 +1,8 @@
-<?php require_once 'inc/header.php';
+<?php
+
+use Verot\Upload\Upload;
+
+require_once 'inc/header.php';
 
 if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
     go(site);
@@ -78,8 +82,62 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                     $process = get('process');
 
                     switch ($process) {
-                        case 'newaddress':
+
+                        case 'changeLogo':
+                            if (isset($_POST['logoupdate'])) {
+                                require_once 'inc/class.upload.php';
+
+                                $image = new Upload($_FILES['logoimage']);
+
+                                if ($image->uploaded) {
+                                    $extension = pathinfo($image->file_src_name, PATHINFO_EXTENSION);
+                                    if ($extension != 'png') {
+                                        alert('Sadece PNG dosyaları kabul edilir.', 'danger');
+                                    } else {
+                                        // ! hangi resmin hangi bayiye ait olduğunu görmek için başına bayikodu yazdırıldı
+                                        $rname = $bcode . "-" . uniqid();
+                                        // ! image altındaki png izin verildi
+                                        $image->allowed = array("image/png");
+                                        $image->file_new_name_body = $rname;
+
+
+                                        // ! yükleneceği yer
+                                        $image->process("uploads/customer");
+                                        if ($image->processed) {
+                                            $up = $db->prepare('UPDATE bayiler SET bayilogo = :b WHERE bayikodu = :k');
+                                            $up->execute([
+                                                ':b' => $rname . '.png',
+                                                ':k' => $bcode
+                                            ]);
+                                            if ($up) {
+                                                alert('Logo Başarıyla Güncellendi', 'success');
+                                                go(site . "/profile.php?process=changeLogo", 2);
+                                            } else {
+                                                alert('Hata Oluştu', 'danger');
+                                            }
+                                        } else {
+                                            alert('resim yüklenemedi', 'alert');
+                                        }
+                                    }
+                                } else {
+                                    alert('Resim seçmediniz', 'danger');
+                                }
+                            }
+
                     ?>
+                            <form action="" method="POST" enctype="multipart/form-data">
+
+                                <div class="customer-login text-left">
+                                    <h4 class="title-1 title-border text-uppercase mb-30">Logo Güncelle</h4>
+                                    <img src="<?php echo site . "/uploads/customer/" . $blogo; ?>" width="100" height="100" alt="<?php echo $bcode; ?>" />
+                                    <input type="file" placeholder="Bayi Logo" name="logoimage">
+                                    <button type="submit" name="logoupdate" class="button-one submit-button mt-15">Logo Güncelle</button>
+                                </div>
+                            </form>
+                        <?php
+                            break;
+                        case 'newaddress':
+                        ?>
                             <form action="" method="POST" onsubmit="return false;" id="addNewAddressForm">
 
                                 <div class="customer-login text-left">

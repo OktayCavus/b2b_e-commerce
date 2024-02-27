@@ -61,6 +61,7 @@ if (@$_SESSION['login'] == @sha1(md5(IP2() . $_SESSION['code']))) {
 
         if ($par->bayidurum == 1) {
             $bid = $par->id;
+            $blogo = $par->bayilogo;
             $bcode = $par->bayikodu;
             $bmail = $par->bayimail;
             $bname = $par->bayiadi;

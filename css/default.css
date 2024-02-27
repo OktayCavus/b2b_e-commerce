@@ -226,6 +226,7 @@ input[type="text"],
 input[type="password"],
 select,
 input[type="date"],
+input[type="file"],
 textarea {
   background: #f6f6f6 none repeat scroll 0 0;
   border: medium none;
