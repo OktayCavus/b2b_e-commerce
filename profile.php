@@ -78,6 +78,19 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                     $process = get('process');
 
                     switch ($process) {
+                        case 'newaddress':
+                    ?>
+                            <form action="" method="POST" onsubmit="return false;" id="addNewAddressForm">
+
+                                <div class="customer-login text-left">
+                                    <h4 class="title-1 title-border text-uppercase mb-30">Yeni Adres Ekle</h4>
+                                    <input type="text" placeholder="ADRES BASLIK" name="adresbaslik">
+                                    <input type="text" placeholder="ADRES TARİF" name="adrestarif">
+                                    <button type="submit" id="addNewAddressButon" onclick="addNewAddressButton();" class="button-one submit-button mt-15">Adres Ekle</button>
+                                </div>
+                            </form>
+                        <?php
+                            break;
 
                         case 'order':
 
@@ -86,7 +99,7 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                             WHERE siparisbayi=:b");
                             $orders->execute([':b' => $bcode]);
 
-                    ?>
+                        ?>
                             <div class="shop-content mt-tab-30 mb-30 mb-lg-0">
                                 <div class="product-option mb-30 clearfix">
                                     <!-- Nav tabs -->
@@ -148,10 +161,39 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                             </div>
                         <?php
                             break;
+
+                        case 'newnotification':
+                        ?>
+                            <form action="" method="POST" onsubmit="return false;" id="addNewNotifForm">
+
+                                <div class="customer-login text-left">
+                                    <h4 class="title-1 title-border text-uppercase mb-30">Yeni Adres Ekle</h4>
+                                    <select name="hbank">
+                                        <option value="0" readonly> Havale yapacağınız bankayı seçiniz </option>
+                                        <?php
+                                        $banks = $db->prepare("Select * from bankalar where bankadurum = :d");
+                                        $banks->execute([
+                                            ':d' => 1
+                                        ]);
+                                        if ($banks->rowCount()) {
+                                            foreach ($banks as $bank) {
+                                                echo '<option value="' . $bank['bankaid'] . '">' . $bank['bankaadi'] . '</option>';
+                                            }
+                                        }                                        ?>
+                                    </select>
+                                    <input type="date" placeholder="Havale tarihi" name="hdate">
+                                    <input type="text" placeholder="Havale Saati" name="hhour">
+                                    <input type="text" placeholder="Havale Tutarı" name="hmoney">
+                                    <textarea name="hdesc" rows="10" placeholder="Havale Açıklaması"></textarea>
+                                    <button type="submit" id="addNewNotifButon" onclick="addNewNotifButton();" class="button-one submit-button mt-15">Havale bildirimi yap</button>
+                                </div>
+                            </form>
+                        <?php
+                            break;
                         case 'notification':
 
                             $notifications = $db->prepare("SELECT * FROM havalebildirim 
-                                INNER JOIN bankalar ON bankalar.id = havalebildirim.banka
+                                INNER JOIN bankalar ON bankalar.bankaid = havalebildirim.banka
                                 WHERE havalebayi=:b");
                             $notifications->execute([':b' => $bcode]);
 
@@ -161,7 +203,7 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                                     <!-- Nav tabs -->
                                     <ul class="nav d-block shop-tab">
                                         <li>Havale Bildirimlerim ( <?php echo $notifications->rowCount(); ?> ) | </li>
-                                        <li><a href="<?php echo site; ?>/profile?process=newnotification">[Yeni Bildirim Ekle]</a></li>
+                                        <li><a href="<?php echo site; ?>/profile.php?process=newnotification">[Yeni Bildirim Ekle]</a></li>
                                     </ul>
                                 </div>
                                 <!-- Tab panes -->
@@ -294,7 +336,7 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                                     <!-- Nav tabs -->
                                     <ul class="nav d-block shop-tab">
                                         <li>Adreslerim ( <?php echo $address->rowCount(); ?> ) | </li>
-                                        <li><a href="">[Yeni Adres Ekle]</a></li>
+                                        <li><a href="<?php echo site; ?>/profile.php?process=newaddress">[Yeni Adres Ekle]</a></li>
                                     </ul>
                                 </div>
                                 <!-- Tab panes -->

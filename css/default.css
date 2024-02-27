@@ -224,7 +224,9 @@
 ----------------------------------------------------- */
 input[type="text"],
 input[type="password"],
-select {
+select,
+input[type="date"],
+textarea {
   background: #f6f6f6 none repeat scroll 0 0;
   border: medium none;
   box-shadow: none;

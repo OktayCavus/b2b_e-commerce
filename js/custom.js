@@ -168,3 +168,65 @@ function changeaddressbutton() {
     },
   });
 }
+
+function addNewAddressButton() {
+  document.getElementById("addNewAddressButon").disabled = true;
+  var data = $("#addNewAddressForm").serialize();
+
+  $.ajax({
+    type: "POST",
+    url: url + "inc/addNewAddress.php",
+    data: data,
+    success: function (result) {
+      if ($.trim(result) == "empty") {
+        document.getElementById("addNewAddressButon").disabled = false;
+
+        alert("Lütfen boş alan bırakma");
+      } else if ($.trim(result) == "error") {
+        document.getElementById("addNewAddressButon").disabled = false;
+
+        alert("Bir hata oluştu");
+      } else if ($.trim(result) == "ok") {
+        alert("başarıyla eklendi");
+        window.location.href = url + "/profile.php?process=adress";
+      } else {
+        alert("var birşeyler");
+        document.getElementById("addNewAddressButon").disabled = false;
+      }
+    },
+  });
+}
+
+function addNewNotifButton() {
+  document.getElementById("addNewNotifButon").disabled = true;
+  var data = $("#addNewNotifForm").serialize();
+
+  $.ajax({
+    type: "POST",
+    url: url + "inc/addNewNotif.php",
+    data: data,
+    success: function (result) {
+      if ($.trim(result) == "empty") {
+        document.getElementById("addNewNotifButon").disabled = false;
+
+        alert("Lütfen boş alan bırakma");
+      } else if ($.trim(result) == "error") {
+        document.getElementById("addNewNotifButon").disabled = false;
+
+        alert("Bir hata oluştu");
+      } else if ($.trim(result) == "number") {
+        document.getElementById("addNewNotifButon").disabled = false;
+
+        alert("Havale tutarı sayısal değer olmalı");
+      } else if ($.trim(result) == "ok") {
+        alert(
+          "Havale bildirimi gönderildi , yönetici kontrolden sonra tarafınıza ulaşım sağlanacaktır"
+        );
+        window.location.href = url + "/profile.php?process=notification";
+      } else {
+        alert("var birşeyler");
+        document.getElementById("addNewNotifButon").disabled = false;
+      }
+    },
+  });
+}
