@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-4 offset-md-4 col-7">
                     <div class="logo text-md-center">
-                        <a href="index.html"><img src="img/logo/logo.png" alt="" /></a>
+                        <a href="<?php echo site; ?>"><img src="img/logo/logo.png" alt="" /></a>
                     </div>
                 </div>
                 <div class="col-md-4 col-5">
@@ -73,10 +73,12 @@
                 <?php if (!isset($_SESSION['login'])) { ?>
                     <li><a href="<?php echo site; ?>/login.php">KAYIT OL</a></li>
                     <li><a href="<?php echo site; ?>/login.php">GİRİŞ YAP</a></li>
+
                 <?php } else { ?>
                     <li><a href="<?php echo site; ?>/profile.php?process=profile">HESABIM</a></li>
+                    <li><a onclick="return confirm('Onaylıyor musunuz?');" href="<?php echo site; ?>/logout.php">ÇIKIŞ YAP</a></li>
                 <?php } ?>
-                <li><a onclick="return confirm('Onaylıyor musunuz?');" href="<?php echo site; ?>/logout.php">ÇIKIŞ YAP</a></li>
+
 
                 <li><a href="<?php echo site; ?>/contact.php">BİZE ULAŞIN</a></li>
             </ul>

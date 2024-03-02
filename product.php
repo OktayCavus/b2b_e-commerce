@@ -8,22 +8,57 @@
 
 	<!-- HEADER-AREA END -->
 	<!-- Mobile-menu start -->
+
+	<?php
+	// ! burda sef lenovo%20v15%20-%201%20intel%20core böyle veya 
+	// ! Asus%20i5%20-%201%20intel%20core böyle bir şey geliyor
+	$sef = get('productsef');
+	if (!$sef) {
+		go(site);
+	}
+
+	$product = $db->prepare("SELECT * FROM urunler WHERE urundurum = :d AND urunsef= :se");
+	$product->execute([
+		':d' => 1,
+		':se' => $sef,
+	]);
+	if ($product->rowCount()) {
+		$row = $product->fetch(PDO::FETCH_OBJ);
+	} else {
+		go(site);
+	}
+
+
+	// ! ÜRÜN YRUMLARI SORGU 
+	$comments = $db->prepare("SELECT * FROM urun_yorumlar WHERE yorumurun = :yu AND yorumdurum = :yd ORDER BY yorumtarih DESC");
+	$comments->execute([
+		':yu' => $row->urunkodu,
+		':yd' => 1
+	]);
+
+
+
+	?>
+
+
 	<?php require_once 'inc/mobilmenu.php'; ?>
 
 	<!-- Mobile-menu end -->
 	<!-- HEADING-BANNER START -->
-	<div class="heading-banner-area overlay-bg">
+	<div class="heading-banner-area overlay-bg" style="background: rgba(0, 0, 0, 0) url(<?php echo site; ?>/uploads/product/<?php echo $row->urunbanner; ?>) no-repeat scroll center center / cover;">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="heading-banner">
 						<div class="heading-banner-title">
-							<h2>Single Product</h2>
+							<h2><?php echo $row->urunbaslik; ?></h2>
 						</div>
 						<div class="breadcumbs pb-15">
 							<ul>
-								<li><a href="index.html">Home</a></li>
-								<li>Single Product</li>
+								<li><a href="<?php echo site; ?>">Home</a></li>
+								<li>Ürün</li>
+
+								<li><?php echo $row->urunbaslik; ?></li>
 							</ul>
 						</div>
 					</div>
@@ -41,125 +76,90 @@
 					<div class="single-product clearfix">
 						<!-- Single-pro-slider Big-photo start -->
 						<div class="single-pro-slider single-big-photo view-lightbox slider-for">
-							<div>
-								<img src="img/single-product/medium/1.jpg" alt="" />
-								<a class="view-full-screen" href="img/single-product/large/1.jpg" data-lightbox="roadtrip" data-title="My caption">
-									<i class="zmdi zmdi-zoom-in"></i>
-								</a>
-							</div>
-							<div>
-								<img src="img/single-product/medium/2.jpg" alt="" />
-								<a class="view-full-screen" href="img/single-product/large/2.jpg" data-lightbox="roadtrip" data-title="My caption">
-									<i class="zmdi zmdi-zoom-in"></i>
-								</a>
-							</div>
-							<div>
-								<img src="img/single-product/medium/3.jpg" alt="" />
-								<a class="view-full-screen" href="img/single-product/large/3.jpg" data-lightbox="roadtrip" data-title="My caption">
-									<i class="zmdi zmdi-zoom-in"></i>
-								</a>
-							</div>
-							<div>
-								<img src="img/single-product/medium/4.jpg" alt="" />
-								<a class="view-full-screen" href="img/single-product/large/4.jpg" data-lightbox="roadtrip" data-title="My caption">
-									<i class="zmdi zmdi-zoom-in"></i>
-								</a>
-							</div>
-							<div>
-								<img src="img/single-product/medium/5.jpg" alt="" />
-								<a class="view-full-screen" href="img/single-product/large/5.jpg" data-lightbox="roadtrip" data-title="My caption">
-									<i class="zmdi zmdi-zoom-in"></i>
-								</a>
-							</div>
+							<?php
+							// ! ürün resim
+							$pimage = $db->prepare("SELECT resimurun,resimdosya,resimdurum,kapak FROM urun_resimler WHERE resimurun = :u");
+							$pimage->execute([
+								':u' => $row->urunkodu,
+							]);
+							if ($pimage->rowCount()) {
+								foreach ($pimage as $pim) {
+
+							?>
+									<div>
+										<img src="<?php echo site . "/uploads/product/" . $pim['resimdosya']; ?>" alt=" <?php echo $row->urunbaslik; ?>" width=" 370" height="450" />
+										<a class="view-full-screen" href="<?php echo site . "/uploads/product/" . $pim['resimdosya']; ?>" data-lightbox="roadtrip" data-title="<?php echo $row->urunbaslik; ?>">
+											<i class="zmdi zmdi-zoom-in"></i>
+										</a>
+									</div>
+							<?php
+								}
+							}
+
+							?>
+
+
 						</div>
 						<!-- Single-pro-slider Big-photo end -->
 						<div class="product-info">
 							<div class="fix">
-								<h4 class="post-title floatleft">dummy Product name</h4>
-								<span class="pro-rating floatright">
-									<a href="#"><i class="zmdi zmdi-star"></i></a>
-									<a href="#"><i class="zmdi zmdi-star"></i></a>
-									<a href="#"><i class="zmdi zmdi-star"></i></a>
-									<a href="#"><i class="zmdi zmdi-star-half"></i></a>
-									<a href="#"><i class="zmdi zmdi-star-half"></i></a>
-									<span>( 27 Rating )</span>
-								</span>
+								<h4 class="post-title floatleft"><?php echo $row->urunbaslik; ?><b> Ürün Kodu:
+										<?php echo $row->urunkodu; ?>
+									</b></h4>
+
 							</div>
 							<div class="fix mb-20">
-								<span class="pro-price">$ 56.20</span>
+								<span class="pro-price"><?php echo $row->urunfiyat . "₺"; ?>
+
+								</span>
 							</div>
 							<div class="product-description">
-								<p>There are many variations of passages of Lorem Ipsum available, but the majority have be suffered alteration in some form, by injected humou or randomised words which donot look even slightly believable. If you are going to use a passage of Lorem Ipsum. </p>
+								<p><?php echo strip_tags(mb_substr($row->urunicerik, 0, 1000, "utf8")); ?></p>
 							</div>
-							<!-- color start -->
-							<div class="color-filter single-pro-color mb-20 clearfix">
-								<ul>
-									<li><span class="color-title text-capitalize">color</span></li>
-									<li><a class="active" href="#"><span class="color color-1"></span></a></li>
-									<li><a href="#"><span class="color color-2"></span></a></li>
-									<li><a href="#"><span class="color color-7"></span></a></li>
-									<li><a href="#"><span class="color color-3"></span></a></li>
-									<li><a href="#"><span class="color color-4"></span></a></li>
-								</ul>
-							</div>
-							<!-- color end -->
-							<!-- Size start -->
-							<div class="size-filter single-pro-size mb-35 clearfix">
-								<ul>
-									<li><span class="color-title text-capitalize">size</span></li>
-									<li><a href="#">M</a></li>
-									<li><a class="active" href="#">S</a></li>
-									<li><a href="#">L</a></li>
-									<li><a href="#">SL</a></li>
-									<li><a href="#">XL</a></li>
-								</ul>
-							</div>
-							<!-- Size end -->
+
 							<div class="clearfix">
 								<div class="cart-plus-minus">
-									<input type="text" value="02" name="qtybutton" class="cart-plus-minus-box">
+									<input type="text" value="1" name="qtybutton" class="cart-plus-minus-box">
 								</div>
 								<div class="product-action clearfix">
-									<a href="wishlist.html" data-bs-toggle="tooltip" data-placement="top" title="Wishlist"><i class="zmdi zmdi-favorite-outline"></i></a>
-									<a href="#" data-bs-toggle="modal" data-bs-target="#productModal" title="Quick View"><i class="zmdi zmdi-zoom-in"></i></a>
-									<a href="#" data-bs-toggle="tooltip" data-placement="top" title="Compare"><i class="zmdi zmdi-refresh"></i></a>
+
 									<a href="cart.html" data-bs-toggle="tooltip" data-placement="top" title="Add To Cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
 								</div>
 							</div>
-							<!-- Single-pro-slider Small-photo start -->
 							<div class="single-pro-slider single-sml-photo slider-nav">
-								<div>
-									<img src="img/single-product/small/1.jpg" alt="" />
-								</div>
-								<div>
-									<img src="img/single-product/small/2.jpg" alt="" />
-								</div>
-								<div>
-									<img src="img/single-product/small/3.jpg" alt="" />
-								</div>
-								<div>
-									<img src="img/single-product/small/4.jpg" alt="" />
-								</div>
-								<div>
-									<img src="img/single-product/small/5.jpg" alt="" />
-								</div>
+								<?php
+								$pimage = $db->prepare("SELECT resimurun,resimdosya,resimdurum,kapak FROM urun_resimler WHERE resimurun = :u");
+								$pimage->execute([
+									':u' => $row->urunkodu,
+								]);
+								if ($pimage->rowCount()) {
+									foreach ($pimage as $pimg) { ?>
+										<div>
+											<img width="70" height="83" src="<?php echo site . "/uploads/product/" . $pimg['resimdosya']; ?>" alt="<?php echo $row->urunbaslik; ?>" />
+										</div>
+								<?php		}
+								}
+
+								?>
+
+
 							</div>
-							<!-- Single-pro-slider Small-photo end -->
+
 						</div>
 					</div>
 				</div>
-				<!-- Single-product end -->
+
 			</div>
-			<!-- single-product-tab start -->
+
 			<div class="single-pro-tab">
 				<div class="row">
 					<div class="col-md-3">
 						<div class="single-pro-tab-menu">
 							<!-- Nav tabs -->
 							<ul class="nav d-block">
-								<li><a href="#description" data-bs-toggle="tab">Description</a></li>
-								<li><a class="active" href="#reviews" data-bs-toggle="tab">Reviews</a></li>
-								<li><a href="#information" data-bs-toggle="tab">Information</a></li>
+								<li><a class="active" href="#description" data-bs-toggle="tab">ÜRÜN AÇIKLAMASI</a></li>
+								<li><a href="#reviews" data-bs-toggle="tab">ÜRÜN YORUMLARI (<?php echo $comments->rowCount();  ?>)</a></li>
+								<li><a href="#information" data-bs-toggle="tab">ÜRÜN ÖZELLİKLERİ</a></li>
 
 							</ul>
 						</div>
@@ -167,118 +167,104 @@
 					<div class="col-md-9">
 						<!-- Tab panes -->
 						<div class="tab-content">
-							<div class="tab-pane" id="description">
+							<div class="tab-pane active" id="description">
 								<div class="pro-tab-info pro-description">
-									<h3 class="tab-title title-border mb-30">dummy Product name</h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas elese ifend. Phasellus a felis at est bibendum feugiat ut eget eni Praesent et messages in con sectetur posuere dolor non.</p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas elese ifend. Phasellus a felis at est bibendum feugiat ut eget eni Praesent et messages in con sectetur posuere dolor non.</p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas elese ifend. Phasellus a felis at est bibendum feugiat ut eget eni Praesent et messages in con sectetur posuere dolor non.</p>
+									<h3 class="tab-title title-border mb-30"><?php echo $row->urunbaslik; ?> Açıklaması</h3>
+
+									<?php echo $row->urunicerik; ?>
+
 								</div>
 							</div>
-							<div class="tab-pane active" id="reviews">
+
+							<div class="tab-pane " id="reviews">
 								<div class="pro-tab-info pro-reviews">
 									<div class="customer-review mb-60">
-										<h3 class="tab-title title-border mb-30">Customer review</h3>
-										<ul class="product-comments clearfix">
-											<li class="mb-30">
-												<div class="pro-reviewer">
-													<img src="img/reviewer/1.jpg" alt="" />
-												</div>
-												<div class="pro-reviewer-comment">
-													<div class="fix">
-														<div class="floatleft mbl-center">
-															<h5 class="text-uppercase mb-0"><strong>Gerald Barnes</strong></h5>
-															<p class="reply-date">27 Jun, 2021 at 2:30pm</p>
+										<h3 class="tab-title title-border mb-30"><?php echo $row->urunbaslik; ?>Ürün Yorumları (<?php echo $comments->rowCount() ?>) </h3>
+										<?php
+										if ($comments->rowCount()) {
+											foreach ($comments as $comment) { ?>
+												<li class="mb-30" style="border-bottom:2px solid #ddd; list-style:none;">
+													<div class="pro-reviewer-comment">
+														<div class="fix">
+															<div class="floatleft mbl-center">
+																<h5 class="text-uppercase mb-0"><strong><?php echo $comment['yorumisim']; ?></strong></h5>
+																<p class="reply-date"><?php echo dt($comment['yorumtarih']); ?></p>
+															</div>
+
 														</div>
-														<div class="comment-reply floatright">
-															<a href="#"><i class="zmdi zmdi-mail-reply"></i></a>
-															<a href="#"><i class="zmdi zmdi-close"></i></a>
-														</div>
+														<p class="mb-0"><?php echo $comment['yorumicerik']; ?></p>
 													</div>
-													<p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas elese ifend. Phasellus a felis at est bibendum feugiat ut eget eni Praesent et messages in con sectetur posuere dolor non.</p>
-												</div>
-											</li>
-											<li class="threaded-comments">
-												<div class="pro-reviewer">
-													<img src="img/reviewer/1.jpg" alt="" />
-												</div>
-												<div class="pro-reviewer-comment">
-													<div class="fix">
-														<div class="floatleft mbl-center">
-															<h5 class="text-uppercase mb-0"><strong>Gerald Barnes</strong></h5>
-															<p class="reply-date">27 Jun, 2021 at 2:30pm</p>
-														</div>
-														<div class="comment-reply floatright">
-															<a href="#"><i class="zmdi zmdi-mail-reply"></i></a>
-															<a href="#"><i class="zmdi zmdi-close"></i></a>
-														</div>
-													</div>
-													<p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas elese ifend. Phasellus a felis at est bibendum feugiat ut eget eni Praesent et messages in con sectetur posuere dolor non.</p>
-												</div>
-											</li>
-										</ul>
+												</li>
+
+										<?php	}
+										} else {
+											alert('ÜRÜN İÇİN YORUM YAPILMAMIŞ', 'warning');
+										}
+										?>
+
 									</div>
-									<div class="leave-review">
-										<h3 class="tab-title title-border mb-30">Leave your reviw</h3>
-										<div class="your-rating mb-30">
-											<p class="mb-10"><strong>Your Rating</strong></p>
-											<span>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-											</span>
-											<span class="separator">|</span>
-											<span>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-											</span>
-											<span class="separator">|</span>
-											<span>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-											</span>
-											<span class="separator">|</span>
-											<span>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-											</span>
-											<span class="separator">|</span>
-											<span>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-												<a href="#"><i class="zmdi zmdi-star-outline"></i></a>
-											</span>
+
+
+									<?php
+									// ! giriş yaptı mı kontrolü yapalım yorum bırakmak için
+
+									if (@$_SESSION['login'] == @sha1(md5(IP() . $bcode))) { ?>
+										<div class="leave-review">
+											<h3 class="tab-title title-border mb-30">Yorum Yapın</h3>
+
+											<div class="reply-box">
+												<form action="#" id="commentform" onsubmit="return false">
+
+													<div class="row">
+														<div class="col-md-12">
+															<textarea class="custom-textarea" name="commentcontent" placeholder="Yorum Yapınız..."></textarea>
+															<input type="hidden" name="productcode" value="<?php echo $row->urunkodu; ?>" />
+															<button type="submit" onclick="addNewComment();" id="addNewComentButon" class="button-one submit-button mt-20">submit review</button>
+														</div>
+													</div>
+												</form>
+											</div>
 										</div>
-										<div class="reply-box">
-											<form action="#">
-												<div class="row">
-													<div class="col-md-6">
-														<input type="text" placeholder="Your name here..." name="name" />
-													</div>
-													<div class="col-md-6">
-														<input type="text" placeholder="Subject..." name="name" />
-													</div>
-												</div>
-												<div class="row">
-													<div class="col-md-12">
-														<textarea class="custom-textarea" name="message" placeholder="Your review here..."></textarea>
-														<button type="submit" data-text="submit review" class="button-one submit-button mt-20">submit review</button>
-													</div>
-												</div>
-											</form>
-										</div>
-									</div>
+									<?php
+
+									} else {
+										alert("Yorum yapabilmek için lütfen <a href= '" . site . "/login.php'>  giriş yapınız </a>", "danger");
+									}
+
+
+									?>
+
+
 								</div>
 							</div>
 							<div class="tab-pane" id="information">
 								<div class="pro-tab-info pro-information">
-									<h3 class="tab-title title-border mb-30">Product information</h3>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas elese ifend. Phasellus a felis at est bibendum feugiat ut eget eni Praesent et messages in con sectetur posuere dolor non.</p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas elese ifend. Phasellus a felis at est bibendum feugiat ut eget eni Praesent et messages in con sectetur posuere dolor non.</p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer accumsan egestas elese ifend. Phasellus a felis at est bibendum feugiat ut eget eni Praesent et messages in con sectetur posuere dolor non.</p>
+									<h3 class="tab-title title-border mb-30"><?php echo $row->urunbaslik; ?> Özellikleri</h3>
+
+									<div class="table-responsive">
+										<table class="table table-hover">
+											<?php
+											$pskills = $db->prepare("SELECT * FROM urun_ozellikler WHERE ozellikurun = :ou AND ozellikdurum = :od");
+											$pskills->execute([
+												':ou' => $row->urunkodu,
+												':od' => 1
+											]);
+											if ($pskills->rowCount()) {
+												foreach ($pskills as $pskill) { ?>
+
+													<tr>
+														<th><?php echo $pskill['ozellikbaslik']; ?></th>
+														<td><?php echo $pskill['ozellikicerik']; ?></td>
+													</tr>
+											<?php	}
+											} else {
+												alert('ÜRÜN ÖZELLİĞİ EKLENMEMİŞ', 'danger');
+											}
+											?>
+
+										</table>
+									</div>
+
 								</div>
 							</div>
 

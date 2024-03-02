@@ -230,3 +230,71 @@ function addNewNotifButton() {
     },
   });
 }
+
+function addNewComment() {
+  document.getElementById("addNewComentButon").disabled = true;
+  var data = $("#commentform").serialize();
+
+  $.ajax({
+    type: "POST",
+    url: url + "/inc/addNewComment.php",
+    data: data,
+    success: function (result) {
+      if ($.trim(result) == "empty") {
+        document.getElementById("addNewComentButon").disabled = false;
+
+        alert("Lütfen boş alan bırakma");
+      } else if ($.trim(result) == "error") {
+        document.getElementById("addNewComentButon").disabled = false;
+
+        alert("Bir hata oluştu");
+      } else if ($.trim(result) == "char") {
+        document.getElementById("addNewComentButon").disabled = false;
+
+        alert("Yorumunuz en az 200 karakter olmalıdır!.");
+      } else if ($.trim(result) == "ok") {
+        alert(
+          "Yorumunuz gönderildi , yönetici kontrolden sonra yayınlanacaktır."
+        );
+        window.location.reload();
+      } else {
+        alert("var birşeyler");
+        console.log(result);
+        document.getElementById("addNewComentButon").disabled = false;
+      }
+    },
+  });
+}
+
+function sendMessage() {
+  document.getElementById("sendMessageButton").disabled = true;
+  var data = $("#contactform").serialize();
+
+  $.ajax({
+    type: "POST",
+    url: url + "/inc/sendMessage.php",
+    data: data,
+    success: function (result) {
+      if ($.trim(result) == "empty") {
+        document.getElementById("sendMessageButton").disabled = false;
+        alert("Lütfen boş alan bırakma");
+      } else if ($.trim(result) == "error") {
+        document.getElementById("sendMessageButton").disabled = false;
+        alert("Bir hata oluştu");
+      } else if ($.trim(result) == "format") {
+        document.getElementById("sendMessageButton").disabled = false;
+        alert("E posta formatı hatalı");
+      } else if ($.trim(result) == "char") {
+        document.getElementById("sendMessageButton").disabled = false;
+        alert("Mesajınız en az 100 karakter olmalıdır!.");
+      } else if ($.trim(result) == "ok") {
+        alert("Mesajınız gönderildi , en kısa sürede dönüş sağlanacaktır ! .");
+        window.location.reload();
+      } else {
+        alert("var birşeyler");
+        console.log(result);
+        document.getElementById("sendMessageButton").disabled = false;
+      }
+    },
+  });
+}

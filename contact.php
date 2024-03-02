@@ -38,39 +38,42 @@
 				<div class="row">
 					<div class="col-lg-4 col-md-5">
 						<div class="contact-details">
-							<h4 class="title-1 title-border text-uppercase mb-30">contact details</h4>
+							<h4 class="title-1 title-border text-uppercase mb-30">İletişim Bilgileri</h4>
 							<ul>
 								<li>
+									<?php	// ! burdaki row config.php içindeki ayarlar tablsonunu çekildiği yerden geliyor 
+									?>
 									<i class="zmdi zmdi-pin"></i>
-									<span>28 Green Tower, Street Name,</span>
-									<span>New York City, USA</span>
+									<span><?php echo $row->adres; ?></span>
 								</li>
 								<li>
 									<i class="zmdi zmdi-phone"></i>
-									<span>+880 1234 123456</span>
-									<span>+880 1234 123456</span>
+									<span>Tlf : <?php echo $row->tel; ?></span>
+									<span>Fax : <?php echo $row->fax; ?></span>
 								</li>
 								<li>
 									<i class="zmdi zmdi-email"></i>
-									<span>company-email@gmail.com</span>
-									<span>your-email@gmail.com</span>
+									<span><?php echo $row->eposta; ?></span>
+
+
 								</li>
 							</ul>
 						</div>
 						<div class="send-message mt-60">
-							<form id="contact-form" action="https://whizthemes.com/mail-php/other/mail.php">
-								<h4 class="title-1 title-border text-uppercase mb-30">send message</h4>
-								<input type="text" name="con_name" placeholder="Your name here..." />
-								<input type="text" name="con_email" placeholder="Your email here..." />
-								<textarea class="custom-textarea" name="con_message" placeholder="Your comment here..."></textarea>
-								<button class="button-one submit-button mt-20" data-text="submit message" type="submit">submit message</button>
+							<form id="contactform" action="" method="POST" onsubmit="return false;">
+								<h4 class="title-1 title-border text-uppercase mb-30">İletişim Formu</h4>
+								<input type="text" name="name" placeholder="Adınız Soyadınız" />
+								<input type="text" name="email" placeholder="Mail Adresiniz" />
+								<textarea class="custom-textarea" name="subject" placeholder="Konu"></textarea>
+								<textarea class="custom-textarea" name="message" placeholder="Mesajınız"></textarea>
+								<button class="button-one submit-button mt-20" onclick="sendMessage();" id="sendMessageButton" type="submit">Mesaj Gönderin</button>
 								<p class="form-message"></p>
 							</form>
 						</div>
 					</div>
 					<div class="col-lg-8 col-md-7 mt-xs-30">
 						<div class="map-area">
-							<div id="googleMap" style="width:100%;height:600px;"></div>
+							<?php echo $row->map; ?>
 						</div>
 					</div>
 				</div>

@@ -14,13 +14,13 @@ if (@$_SESSION['login'] == @sha1(md5(IP() . $bcode))) {
 
 	<!-- Mobile-menu end -->
 	<!-- HEADING-BANNER START -->
-	<div class="heading-banner-area overlay-bg">
+	<div class="heading-banner-area overlay-bg" style="background: rgba(0, 0, 0, 0) url(<?php echo site; ?>/uploads/indexbanner.png) no-repeat scroll center center / cover;">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="heading-banner">
 						<div class="heading-banner-title">
-							<h2>Registration</h2>
+							<h2>Giriş yap</h2>
 						</div>
 						<div class="breadcumbs pb-15">
 							<ul>
