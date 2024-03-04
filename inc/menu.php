@@ -1,3 +1,15 @@
+<?php
+
+$cartinfo = $db->prepare("SELECT * FROM sepet 
+INNER JOIN urunler on urunler.urunkodu = sepet.sepeturun WHERE sepetbayi = :b");
+$cartinfo->execute([
+    ':b' => $bcode,
+]);
+
+
+?>
+
+
 <header id="sticky-menu" class="header header-2">
     <div class="header-area">
         <div class="container-fluid">
@@ -13,42 +25,54 @@
                             <li>
                                 <a class="cart-icon" href="#">
                                     <i class="zmdi zmdi-shopping-cart"></i>
-                                    <span>3</span>
+                                    <span><?php
+                                            echo  $cartinfo->rowCount();
+                                            ?></span>
                                 </a>
                                 <div class="mini-cart-brief text-left">
                                     <div class="cart-items">
-                                        <p class="mb-0">You have <span>03 items</span> in your shopping bag</p>
+                                        <p class="mb-0">Sepetinizde <span>
+                                                <?php
+                                                echo  $cartinfo->rowCount();
+                                                ?> adet</span> ürün bulunuyor</p>
                                     </div>
                                     <div class="all-cart-product clearfix">
-                                        <div class="single-cart clearfix">
-                                            <div class="cart-photo">
-                                                <a href="#"><img src="img/cart/1.jpg" alt="" /></a>
-                                            </div>
-                                            <div class="cart-info">
-                                                <h5><a href="#">dummy product name</a></h5>
-                                                <p class="mb-0">Price : $ 100.00</p>
-                                                <p class="mb-0">Qty : 02 </p>
-                                                <span class="cart-delete"><a href="#"><i class="zmdi zmdi-close"></i></a></span>
-                                            </div>
-                                        </div>
-                                        <div class="single-cart clearfix">
-                                            <div class="cart-photo">
-                                                <a href="#"><img src="img/cart/2.jpg" alt="" /></a>
-                                            </div>
-                                            <div class="cart-info">
-                                                <h5><a href="#">dummy product name</a></h5>
-                                                <p class="mb-0">Price : $ 300.00</p>
-                                                <p class="mb-0">Qty : 01 </p>
-                                                <span class="cart-delete"><a href="#"><i class="zmdi zmdi-close"></i></a></span>
-                                            </div>
-                                        </div>
+                                        <?php
+                                        if ($cartinfo->rowCount()) {
+                                            $totalprice = 0;
+                                            foreach ($cartinfo as $cart) {
+                                                $ptax = $cart['kdv'] == 0 ? '' : "+KDV";
+                                        ?>
+
+
+                                                <div class="single-cart clearfix">
+                                                    <div class="cart-photo">
+                                                        <a href="<?php echo site . "/product.php?productsef=" . $cart['urunsef']; ?>"><img src="<?php echo site . "/uploads/product/" . $cart['urunkapak'] ?>" alt="<?php echo $cart['urunbaslik']; ?>" width="90" height="90" /></a>
+                                                    </div>
+                                                    <div class="cart-info">
+                                                        <p><a href="<?php echo site . "/product.php?productsef=" . $cart['urunsef']; ?>"><?php echo $cart['urunbaslik']; ?></a></p>
+                                                        <p class="mb-0">Fiyat : <?php echo $cart['urunfiyat'] . "₺" . $ptax; ?></p>
+                                                        <p class="mb-0">Adet : <?php echo $cart['sepetadet']; ?></p>
+                                                        <p class="mb-0">Toplam <span style="color: red;">(KDV Dahil: <?php echo $cart['toplam'] . " ₺"; ?>)</span></p>
+
+
+                                                        <span class="cart-delete"><a onclick="return confirm('Ürünü sepetten silmek istiyor musunuz?');" href=" <?php echo site . "/cart.php?productdelete&code=" . $cart['sepeturun']; ?>"><i class="zmdi zmdi-close"></i></a></span>
+                                                    </div>
+                                                </div>
+                                        <?php
+                                                $totalprice += $cart['toplam'];
+                                            }
+                                        } else {
+                                            alert('SEPETİNİZDE ÜRÜN BULUNMUYOR', 'warning');
+                                        }
+                                        ?>
                                     </div>
                                     <div class="cart-totals">
-                                        <h5 class="mb-0">Total <span class="floatright">$500.00</span></h5>
+                                        <h5 class="mb-0">Genel Toplam: <span class="floatright"><?php echo $totalprice;  ?></span></h5>
                                     </div>
                                     <div class="cart-bottom  clearfix">
-                                        <a href="cart.html" class="button-one floatleft text-uppercase" data-text="View cart">View cart</a>
-                                        <a href="checkout.html" class="button-one floatright text-uppercase" data-text="Check out">Check out</a>
+                                        <a href="cart.php" class="button-one floatleft text-uppercase" data-text="Sepete git">Sepete git</a>
+
                                     </div>
                                 </div>
                             </li>

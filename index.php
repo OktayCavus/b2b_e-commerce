@@ -103,8 +103,8 @@
 														</div>
 
 														<div class="product-action clearfix">
-															<a href="<?php echo site . '/product.php?productsef=' . $row['urunsef']; ?>" title="Ürün Detayı"><i class="zmdi zmdi-arrow-right"></i></a>
-															<a href="cart.html" title="Spete Ekle"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
+															<a href="<?php echo site . '/product.php?productsef=' . $row['urunsef']; ?>" title="Ürün Detayı"><i class="zmdi zmdi-arrow-right"></i> Detay</a>
+
 														</div>
 													</div>
 												</div>

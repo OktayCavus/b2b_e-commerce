@@ -112,7 +112,7 @@
 		<!-- main js -->
 		<script src="js/main.js"></script>
 		<!-- custom js -->
-		<script src="js/custom.js?v=1"></script>
+		<script src="js/custom.js?v=<?php echo time(); ?>"></script>
 		</body>
 
 		</html>

@@ -298,3 +298,38 @@ function sendMessage() {
     },
   });
 }
+
+function addCart() {
+  document.getElementById("addCartt").disabled = true;
+  var data = $("#addCartForm").serialize();
+
+  $.ajax({
+    type: "POST",
+    url: url + "/inc/addCart.php",
+    data: data,
+    success: function (result) {
+      console.log(result);
+      if ($.trim(result) == "empty") {
+        alert("Ürün adeti belirtiniz");
+        document.getElementById("addCartt").disabled = false;
+      } else if ($.trim(result) == "login") {
+        alert("Sepete eklemek için giriş yapmalısınız");
+        document.getElementById("addCartt").disabled = false;
+      } else if ($.trim(result) == "qty") {
+        alert("En az 1 adet seçmelisiniz");
+        document.getElementById("addCartt").disabled = false;
+      } else if ($.trim(result) == "error") {
+        alert("Hata oluştu");
+        document.getElementById("addCartt").disabled = false;
+      } else if ($.trim(result) == "ok") {
+        alert("Ürün sepete eklendi");
+        document.getElementById("addCartt").disabled = false;
+
+        window.location.reload();
+      } else {
+        alert("var birşeyler");
+        document.getElementById("addCartt").disabled = false;
+      }
+    },
+  });
+}

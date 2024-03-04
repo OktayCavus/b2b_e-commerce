@@ -118,13 +118,18 @@
 							</div>
 
 							<div class="clearfix">
-								<div class="cart-plus-minus">
-									<input type="text" value="1" name="qtybutton" class="cart-plus-minus-box">
-								</div>
-								<div class="product-action clearfix">
 
-									<a href="cart.html" data-bs-toggle="tooltip" data-placement="top" title="Add To Cart"><i class="zmdi zmdi-shopping-cart-plus"></i></a>
-								</div>
+								<form action="" method="POST" onsubmit="return false;" id="addCartForm">
+
+									<input type="number" value="1" name="qtybutton" class="cart-plus-minus-box" min="1" oninput="validity.valid||(value='1');">
+									<input type="hidden" value="<?php echo $row->urunkodu; ?>" name="pcode" class="cart-plus-minus-box">
+
+									<div class="product-action clearfix">
+
+										<button onclick="addCart();" id="addCartt" class="btn btn-default" type="submit"><i class="zmdi zmdi-shopping-cart-plus"></i>Sepete Ekle</button>
+									</div>
+								</form>
+
 							</div>
 							<div class="single-pro-slider single-sml-photo slider-nav">
 								<?php
