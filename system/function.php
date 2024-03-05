@@ -137,6 +137,7 @@ function title()
         if ($product->rowCount()) {
 
             $prow  = $product->fetch(PDO::FETCH_OBJ);
+            // ! burdaki değişkenler header kısmında kullanılacak
             $title['title']  = $prow->urunbaslik . " - " . $sitebaslik;
             $title['desc']   = mb_substr($prow->urundesc, 0, 260, 'utf8');
             $title['keyw']   = mb_substr($prow->urunkeyw, 0, 260, 'utf8');
@@ -166,31 +167,31 @@ function title()
             $title['keyw']   = mb_substr($sitekeyw, 0, 320, 'utf8');
             $title['img']    = $site . "/uploads/" . $crow->kapak;
         }
-    } else if (loc() == $site . "/login-register") {
+    } else if (loc() == $site . "/login.php") {
 
         $title['title']  = "Kayıt Ol/Giriş Yap - " . $sitebaslik;
         $title['desc']   = mb_substr($sitedesc, 0, 260, 'utf8');
         $title['keyw']   = mb_substr($sitekeyw, 0, 320, 'utf8');
         $title['img']    = $site . "/uploads/" . $sitelogo;
-    } else if (loc() == $site . "/contact-us") {
+    } else if (loc() == $site . "/contact.php") {
 
         $title['title']  = "Bize Ulaşın - " . $sitebaslik;
         $title['desc']   = mb_substr($sitedesc, 0, 260, 'utf8');
         $title['keyw']   = mb_substr($sitekeyw, 0, 320, 'utf8');
         $title['img']    = $site . "/uploads/" . $sitelogo;
-    } else if (loc() == $site . "/cart") {
+    } else if (loc() == $site . "/cart.php") {
 
         $title['title']  = "Sepetim - " . $sitebaslik;
         $title['desc']   = mb_substr($sitedesc, 0, 260, 'utf8');
         $title['keyw']   = mb_substr($sitekeyw, 0, 320, 'utf8');
         $title['img']    = $site . "/uploads/" . $sitelogo;
-    } else if (loc() == $site . "/checkout") {
+    } else if (loc() == $site . "/checkout.php") {
 
         $title['title']  = "Ödeme Yap - " . $sitebaslik;
         $title['desc']   = mb_substr($sitedesc, 0, 260, 'utf8');
         $title['keyw']   = mb_substr($sitekeyw, 0, 320, 'utf8');
         $title['img']    = $site . "/uploads/" . $sitelogo;
-    } else if (mb_substr(loc(), 0, 28) == $site . "/profile") {
+    } else if (mb_substr(loc(), 0, 32) == $site . "/profile.php") {
 
         $title['title']  = "Profilim - " . $sitebaslik;
         $title['desc']   = mb_substr($sitedesc, 0, 260, 'utf8');

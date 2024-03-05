@@ -1,3 +1,7 @@
+<?php
+
+echo !defined('security') ? die() : null;
+?>
 <div class="mobile-menu-area">
     <div class="container-fluid">
         <div class="row">

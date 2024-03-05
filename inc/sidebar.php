@@ -1,4 +1,7 @@
 <?php
+
+echo !defined('security') ? die() : null;
+
 $cat = $db->prepare("SELECT * FROM urun_kategoriler WHERE katdurum = :d");
 
 $cat->execute([

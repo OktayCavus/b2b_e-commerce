@@ -2,7 +2,7 @@
 
 
 session_start();
-ob_start();
+ob_start('compress');
 date_default_timezone_set('Europe/Istanbul');
 
 try {
@@ -23,6 +23,10 @@ if ($query->rowCount()) {
     $row = $query->fetch(PDO::FETCH_OBJ);
 
     $site = $row->siteurl;
+    $sitebaslik = $row->sitebaslik;
+    $sitekeyw = $row->sitekeyw;
+    $sitedesc = $row->sitedesc;
+    $sitelogo = $row->sitelogo;
 
 
     // Sabitler

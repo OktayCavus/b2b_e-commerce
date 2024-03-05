@@ -2,6 +2,8 @@
 
 use Verot\Upload\Upload;
 
+define('security', true);
+
 require_once 'inc/header.php';
 
 if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
@@ -27,7 +29,7 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
     <?php require_once 'inc/mobilmenu.php'; ?>
 
 
-    <div class="heading-banner-area overlay-bg">
+    <div class="heading-banner-area overlay-bg" style="background: rgba(0, 0, 0, 0) url(<?php echo site; ?>/uploads/indexbanner.png) no-repeat scroll center center / cover;">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -191,11 +193,95 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                                                         <tbody>
                                                             <?php foreach ($orders as $order) { ?>
                                                                 <tr>
-                                                                    <td><a href="<?php echo site . "/profile?process=orderdetail&code=" . $order['sipariskodu']; ?>" title="Sipariş detayı"><?php echo $order['sipariskodu']; ?></a></td>
+                                                                    <td><a href="<?php echo site . "/profile.php?process=orderdetail&code=" . $order['sipariskodu']; ?>" title="Sipariş detayı"><?php echo $order['sipariskodu']; ?></a></td>
                                                                     <td><?php echo $order['durumbaslik']; ?></td>
                                                                     <td><?php echo $order['siparistutar']; ?> ₺</td>
                                                                     <td><?php echo $order['siparisodeme'] == 1 ? 'Havale' : 'Kredi Kartı'; ?></td>
                                                                     <td><?php echo dt($order['siparistarih']) . " | " . $order['siparissaat']; ?></td>
+
+                                                                </tr>
+                                                            <?php } ?>
+                                                        </tbody>
+                                                    </table>
+
+                                                <?php } else {
+                                                    alert('Siparişiniz bulunmuyor', 'danger');
+                                                } ?>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Pagination start -->
+
+                                <!-- Pagination end -->
+                            </div>
+                        <?php
+                            break;
+
+
+                        case 'orderdetail':
+                            $code = get('code');
+                            if (!$code) {
+                                go(site);
+                            }
+                            // ! burda siparisler ile birleştirme sebebi başka insanın siparişini görememek için
+                            $orders = $db->prepare("SELECT * FROM siparis_urunler as su
+                                    INNER JOIN siparisler as s ON s.sipariskodu = su.sipkodu 
+                                    INNER JOIN bayi_adresler AS ba ON s.siparisadres = ba.id
+                                WHERE siparisbayi=:b AND sipariskodu = :code");
+                            $orders->execute([
+                                ':b' => $bcode,
+                                ':code' => $code
+                            ]);
+
+                        ?>
+                            <div class="shop-content mt-tab-30 mb-30 mb-lg-0">
+                                <div class="product-option mb-30 clearfix">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav d-block shop-tab">
+                                        <li><?php echo $code . " nolu siparişime ait ürünler (" . $orders->rowCount() . ")"; ?></li>
+                                        <li><a href="<?php echo site . "/profile.php?process=order"; ?>">Listeye Dön</a></li>
+
+
+                                    </ul>
+                                </div>
+                                <!-- Tab panes -->
+
+                                <div class="login-area">
+                                    <div class="container">
+                                        <div class="row">
+
+                                            <div class="table-responsive">
+
+                                                <?php
+
+                                                if ($orders->rowCount()) {
+
+
+                                                ?>
+                                                    <table class="table table-hover" id="b2btable">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Ürün Adı</th>
+                                                                <th>Ürün fiyat</th>
+                                                                <th>Adet</th>
+                                                                <th>Toplam</th>
+                                                                <th>Adres</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php foreach ($orders as $order) { ?>
+                                                                <tr>
+
+                                                                    <td><?php echo $order['sipurunadi']; ?></td>
+                                                                    <td><?php echo $order['sipbirimfiyat']; ?> ₺</td>
+                                                                    <td><?php echo $order['sipadet']; ?></td>
+                                                                    <td><?php echo $order['siptoplam']; ?></td>
+                                                                    <td><?php echo $order['adresbaslik']; ?></td>
 
                                                                 </tr>
                                                             <?php } ?>

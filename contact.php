@@ -1,4 +1,9 @@
-<?php require_once 'inc/header.php'; ?>
+<?php
+define('security', true);
+
+
+
+require_once 'inc/header.php'; ?>
 
 <!-- WRAPPER START -->
 <div class="wrapper bg-dark-white">
@@ -11,18 +16,18 @@
 
 	<!-- Mobile-menu end -->
 	<!-- HEADING-BANNER START -->
-	<div class="heading-banner-area overlay-bg">
+	<div class="heading-banner-area overlay-bg" style="background: rgba(0, 0, 0, 0) url(<?php echo site; ?>/uploads/indexbanner.png) no-repeat scroll center center / cover;">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="heading-banner">
 						<div class="heading-banner-title">
-							<h2>Contact Us</h2>
+							<h2>Bize Ulaşın</h2>
 						</div>
 						<div class="breadcumbs pb-15">
 							<ul>
-								<li><a href="index.html">Home</a></li>
-								<li>Contact Us</li>
+								<li><a href="<?php echo site; ?>">Ana Sayfa</a></li>
+								<li>Bize Ulaşın</li>
 							</ul>
 						</div>
 					</div>

@@ -169,35 +169,6 @@ function changeaddressbutton() {
   });
 }
 
-// function addNewAddressButton() {
-//   document.getElementById("addNewAddressButon").disabled = true;
-//   var data = $("#addNewAddressForm").serialize();
-
-//   $.ajax({
-//     type: "POST",
-//     url: url + "inc/addNewAddress.php",
-//     data: data,
-//     success: function (result) {
-//       console.log(result);
-//       if ($.trim(result) == "empty") {
-//         document.getElementById("addNewAddressButon").disabled = false;
-
-//         alert("Lütfen boş alan bırakma");
-//       } else if ($.trim(result) == "error") {
-//         document.getElementById("addNewAddressButon").disabled = false;
-
-//         alert("Bir hata oluştu");
-//       } else if ($.trim(result) == "ok") {
-//         alert("başarıyla eklendi");
-//         window.location.reload();
-//       } else {
-//         alert("var birşeyler");
-//         document.getElementById("addNewAddressButon").disabled = false;
-//       }
-//     },
-//   });
-// }
-
 function addNewAddressButton() {
   document.getElementById("addNewAddressButon").disabled = true;
   var data = $("#addNewAddressForm").serialize();
@@ -217,30 +188,22 @@ function addNewAddressButton() {
       } else if ($.trim(result) == "ok") {
         alert("Adres başarıyla eklendi.");
 
-        // Mevcut form bilgilerini saklayalım
         var siparisBilgileri = {
-          isimSoyisim: $("input[name='isim_soyisim']").val(),
-          telefon: $("input[name='telefon']").val(),
-          siparisNotu: $("textarea[name='siparis_notu']").val(),
-          secilenAdres: $("select[name='secilen_adres']").val(),
+          isimSoyisim: $("input[name='name']").val(),
+          telefon: $("input[name='phone']").val(),
+          siparisNotu: $("textarea[name='note']").val(),
         };
 
-        // Sayfayı yenilemeden önce saklanan bilgileri geri yükle
-        $("input[name='isim_soyisim']").val(siparisBilgileri.isimSoyisim);
-        $("input[name='telefon']").val(siparisBilgileri.telefon);
-        $("textarea[name='siparis_notu']").val(siparisBilgileri.siparisNotu);
-        $("select[name='secilen_adres']").val(siparisBilgileri.secilenAdres);
-
-        // Mevcut URL'yi kontrol et
         var currentURL = window.location.href;
 
-        // Eğer profil sayfasından geldiysek
         if (currentURL.indexOf("profile.php?process=newaddress") !== -1) {
-          // Sayfayı yenile
           window.location.reload();
         } else {
-          // Modalı kapat
-          $("#addressmodal").modal("hide");
+          window.location.reload();
+
+          $("input[name='name']").val(siparisBilgileri.isimSoyisim);
+          $("input[name='phone']").val(siparisBilgileri.telefon);
+          $("textarea[name='note']").val(siparisBilgileri.siparisNotu);
         }
       } else {
         alert("Bir şeyler ters gitti.");

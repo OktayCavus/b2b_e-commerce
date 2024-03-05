@@ -1,4 +1,8 @@
-<?php require_once 'inc/header.php';
+<?php
+
+define('security', true);
+
+require_once 'inc/header.php';
 
 if (@$_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
 	go(site);

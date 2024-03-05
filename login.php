@@ -1,4 +1,8 @@
-<?php require_once 'inc/header.php';
+<?php
+
+define('security', true);
+
+require_once 'inc/header.php';
 
 if (@$_SESSION['login'] == @sha1(md5(IP() . $bcode))) {
 	go(site);
@@ -20,12 +24,12 @@ if (@$_SESSION['login'] == @sha1(md5(IP() . $bcode))) {
 				<div class="col-md-12">
 					<div class="heading-banner">
 						<div class="heading-banner-title">
-							<h2>Giriş yap</h2>
+							<h2>Giriş / Kayıt</h2>
 						</div>
 						<div class="breadcumbs pb-15">
 							<ul>
-								<li><a href="index.html">Home</a></li>
-								<li>Registration</li>
+								<li><a href="<?php echo site; ?>">Ana Sayfa</a></li>
+								<li>Giriş / Kayıt</li>
 							</ul>
 						</div>
 					</div>

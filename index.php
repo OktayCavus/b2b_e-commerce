@@ -1,4 +1,9 @@
-<?php require_once 'inc/header.php'; ?>
+<?php
+
+define('security', true);
+
+
+require_once 'inc/header.php'; ?>
 <!-- WRAPPER START -->
 <div class="wrapper bg-dark-white">
 

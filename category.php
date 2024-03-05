@@ -1,4 +1,5 @@
 <?php
+
 define('security', true);
 
 require_once 'inc/header.php'; ?>

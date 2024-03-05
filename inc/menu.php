@@ -1,4 +1,5 @@
 <?php
+echo !defined('security') ? die() : null;
 
 $cartinfo = $db->prepare("SELECT * FROM sepet 
 INNER JOIN urunler on urunler.urunkodu = sepet.sepeturun WHERE sepetbayi = :b");
@@ -16,7 +17,7 @@ $cartinfo->execute([
             <div class="row">
                 <div class="col-md-4 offset-md-4 col-7">
                     <div class="logo text-md-center">
-                        <a href="<?php echo site; ?>"><img src="img/logo/logo.png" alt="" /></a>
+                        <a href="<?php echo site; ?>"><img src="<?php echo site . "/uploads/" . $row->sitelogo; ?>" alt="<?php echo baslik; ?>" /></a>
                     </div>
                 </div>
                 <div class="col-md-4 col-5">
