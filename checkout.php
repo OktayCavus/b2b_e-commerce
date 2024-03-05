@@ -1,4 +1,9 @@
-<?php require_once 'inc/header.php'; ?>
+<?php require_once 'inc/header.php';
+
+if (@$_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
+	go(site);
+}
+?>
 
 <!-- WRAPPER START -->
 <div class="wrapper bg-dark-white">
@@ -12,18 +17,18 @@
 
 	<!-- Mobile-menu end -->
 	<!-- HEADING-BANNER START -->
-	<div class="heading-banner-area overlay-bg">
+	<div class="heading-banner-area overlay-bg" style="background: rgba(0, 0, 0, 0) url(<?php echo site; ?>/uploads/indexbanner.png) no-repeat scroll center center / cover;">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="heading-banner">
 						<div class="heading-banner-title">
-							<h2>check out</h2>
+							<h2>Ödeme Ekranı</h2>
 						</div>
 						<div class="breadcumbs pb-15">
 							<ul>
-								<li><a href="index.html">Home</a></li>
-								<li>check out</li>
+								<li><a href="<?php echo site; ?>">Ana Sayfa</a></li>
+								<li>Ödeme Ekranı</li>
 							</ul>
 						</div>
 					</div>
@@ -48,112 +53,72 @@
 
 							<!-- check-out start -->
 							<div class="tab-pane active" id="check-out">
-								<form action="#">
+								<form action="#" onsubmit="return false;" id="orderform" method="POST">
 									<div class="shop-cart-table check-out-wrap">
 										<div class="row">
-											<div class="col-md-6">
+											<div class="col-md-12">
 												<div class="billing-details pr-20">
-													<h4 class="title-1 title-border text-uppercase mb-30">billing details</h4>
-													<input type="text" placeholder="Your name here...">
-													<input type="text" placeholder="Email address here...">
-													<input type="text" placeholder="Phone here...">
-													<input type="text" placeholder="Company neme here...">
-													<select class="custom-select mb-15">
-														<option>Contry</option>
-														<option>Bangladesh</option>
-														<option>United States</option>
-														<option>united Kingdom</option>
-														<option>Australia</option>
-														<option>Canada</option>
+													<h4 class="title-1 title-border text-uppercase mb-30">Sipariş Bilgileri</h4>
+													<input type="text" value="<?php echo $bname; ?>" name="name" placeholder="Siparişi teslim alacak isim soyisim">
+													<input type="text" value="<?php echo $bphone; ?>" name="phone" placeholder="Siparişi teslim alacak telefon numarası">
+													<textarea class="custom-textarea" name="note" placeholder="Sipariş Notunuz"></textarea>
+
+													<a href="#" data-bs-toggle="modal" data-bs-target="#addressmodal">[+Yeni Adres Ekle]</a>
+
+													<select name="address" class="custom-select mb-15">
+														<option value="0">Adres Seçiniz</option>
+														<?php
+														$address = $db->prepare("SELECT * FROM bayi_adresler WHERE adresbayi = :a AND adresdurum = :d");
+														$address->execute([
+															':a' => $bcode,
+															':d' => 1
+														]);
+														if ($address->rowCount()) {
+															foreach ($address as $adres) {
+																echo '<option value=' . $adres['id'] . '>' . $adres['adresbaslik'] . ' (' . $adres['adrestarif'] . ')</option>';
+															}
+														}
+														?>
 													</select>
-													<select class="custom-select mb-15">
-														<option>State</option>
-														<option>Dhaka</option>
-														<option>New York</option>
-														<option>London</option>
-														<option>Melbourne</option>
-														<option>Ottawa</option>
-													</select>
-													<select class="custom-select mb-15">
-														<option>Town / City</option>
-														<option>Dhaka</option>
-														<option>New York</option>
-														<option>London</option>
-														<option>Melbourne</option>
-														<option>Ottawa</option>
-													</select>
-													<textarea class="custom-textarea" placeholder="Your address here..."></textarea>
+
 												</div>
 											</div>
-											<div class="col-md-6 mt-xs-30">
-												<div class="billing-details pl-20">
-													<h4 class="title-1 title-border text-uppercase mb-30">ship to different address</h4>
-													<input type="text" placeholder="Your name here...">
-													<input type="text" placeholder="Email address here...">
-													<input type="text" placeholder="Phone here...">
-													<input type="text" placeholder="Company neme here...">
-													<select class="custom-select mb-15">
-														<option>Contry</option>
-														<option>Bangladesh</option>
-														<option>United States</option>
-														<option>united Kingdom</option>
-														<option>Australia</option>
-														<option>Canada</option>
-													</select>
-													<select class="custom-select mb-15">
-														<option>State</option>
-														<option>Dhaka</option>
-														<option>New York</option>
-														<option>London</option>
-														<option>Melbourne</option>
-														<option>Ottawa</option>
-													</select>
-													<select class="custom-select mb-15">
-														<option>Town / City</option>
-														<option>Dhaka</option>
-														<option>New York</option>
-														<option>London</option>
-														<option>Melbourne</option>
-														<option>Ottawa</option>
-													</select>
-													<textarea class="custom-textarea" placeholder="Your address here..."></textarea>
-												</div>
-											</div>
+
 											<div class="col-md-6">
 												<div class="our-order payment-details mt-60 pr-20">
-													<h4 class="title-1 title-border text-uppercase mb-30">our order</h4>
+													<h4 class="title-1 title-border text-uppercase mb-30">Toplam Tutar</h4>
 													<table>
 														<thead>
 															<tr>
-																<th><strong>Product</strong></th>
-																<th class="text-end"><strong>Total</strong></th>
+																<th><strong>Ürün</strong></th>
+																<th class="text-end"><strong>Toplam</strong></th>
 															</tr>
 														</thead>
 														<tbody>
-															<tr>
-																<td>Dummy Product Name x 2</td>
-																<td class="text-end">$86.00</td>
-															</tr>
-															<tr>
-																<td>Dummy Product Name x 1</td>
-																<td class="text-end">$69.00</td>
-															</tr>
-															<tr>
-																<td>Cart Subtotal</td>
-																<td class="text-end">$155.00</td>
-															</tr>
-															<tr>
-																<td>Shipping and Handing</td>
-																<td class="text-end">$15.00</td>
-															</tr>
-															<tr>
-																<td>Vat</td>
-																<td class="text-end">$00.00</td>
-															</tr>
-															<tr>
-																<td>Order Total</td>
-																<td class="text-end">$170.00</td>
-															</tr>
+															<?php
+															$shopping = $db->prepare("SELECT * FROM sepet 
+															INNER JOIN urunler on urunler.urunkodu = sepet.sepeturun WHERE sepetbayi = :b");
+															$shopping->execute([
+																':b' => $bcode,
+															]);
+															$total = 0;
+															if ($shopping->rowCount()) {
+
+																foreach ($shopping as $shop) {
+																	$total += $shop['toplam'];
+															?>
+																	<tr>
+																		<td><?php echo $shop['urunbaslik']; ?> X <?php echo $shop['sepetadet']; ?></td>
+																		<td class="text-end"><?php echo $shop['toplam'] . " ₺"; ?></td>
+																	</tr>
+
+																<?php  } ?>
+																<tr>
+																	<td>Genel Toplam</td>
+																	<td class="text-end"><?php echo $total . " ₺"; ?></td>
+																</tr>
+															<?php		} ?>
+
 														</tbody>
 													</table>
 												</div>
@@ -161,33 +126,16 @@
 											<!-- payment-method -->
 											<div class="col-md-6">
 												<div class="payment-method mt-60  pl-20">
-													<h4 class="title-1 title-border text-uppercase mb-30">payment method</h4>
+													<h4 class="title-1 title-border text-uppercase mb-30">Ödeme Yöntemi</h4>
 													<div class="payment-accordion">
-														<!-- Accordion start  -->
-														<h3 class="payment-accordion-toggle active">Direct Bank Transfer</h3>
-														<div class="payment-content default">
-															<p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order won't be shipped until the funds have cleared in our account.</p>
-														</div>
-														<!-- Accordion end -->
-														<!-- Accordion start -->
-														<h3 class="payment-accordion-toggle">Cheque Payment</h3>
-														<div class="payment-content">
-															<p>Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-														</div>
-														<!-- Accordion end -->
-														<!-- Accordion start -->
-														<h3 class="payment-accordion-toggle">PayPal</h3>
-														<div class="payment-content">
-															<p>Pay via PayPal; you can pay with your credit card if you don�t have a PayPal account.</p>
-															<a href="#"><img src="img/payment/1.png" alt="" /></a>
-															<a href="#"><img src="img/payment/2.png" alt="" /></a>
-															<a href="#"><img src="img/payment/3.png" alt="" /></a>
-															<a href="#"><img src="img/payment/4.png" alt="" /></a>
-														</div>
-														<!-- Accordion end -->
-														<button class="button-one submit-button mt-15" data-text="place order" type="submit">place order</button>
+														<select name="payment" class="custom-select mb-15">
+															<option value="0">Ödeme Yöntemi Seçiniz</option>
+															<option value="1">Havale & EFT</option>
+															<option value="2">Kredi Kartı</option>
+														</select>
 													</div>
 												</div>
+												<button onclick="ordercompleted();" id="ordercomplet" type="submit" class="button-one submit-button mt-20   ml-20">SİPARİŞİ TAMAMLA</button>
 											</div>
 										</div>
 									</div>
@@ -205,3 +153,38 @@
 	<!-- CHECKOUT-AREA END -->
 	<!-- FOOTER START -->
 	<?php require_once 'inc/footer.php'; ?>
+
+
+	<div class="modal fade" id="addressmodal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<div class="modal-product">
+
+
+						<div class="product-info" style="width:90%">
+							<h1>Yeni Adres Ekle</h1>
+
+
+							<div class="quick-add-to-cart">
+								<form method="POST" class="cart" onsubmit="return false;" id="addNewAddressForm">
+									<div>
+										<input type="text" name="adresbaslik" placeholder="Adres başlık">
+
+										<input type="text" name="adrestarif" placeholder="Açık adresiniz">
+									</div>
+									<button onclick='addNewAddressButton();' id='addNewAddressButon' class="single_add_to_cart_button" type="submit">YENİ ADRES EKLE</button>
+								</form>
+
+							</div>
+
+
+						</div><!-- .product-info -->
+					</div><!-- .modal-product -->
+				</div><!-- .modal-body -->
+			</div><!-- .modal-content -->
+		</div><!-- .modal-dialog -->
+	</div>

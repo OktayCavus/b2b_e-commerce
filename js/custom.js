@@ -169,6 +169,35 @@ function changeaddressbutton() {
   });
 }
 
+// function addNewAddressButton() {
+//   document.getElementById("addNewAddressButon").disabled = true;
+//   var data = $("#addNewAddressForm").serialize();
+
+//   $.ajax({
+//     type: "POST",
+//     url: url + "inc/addNewAddress.php",
+//     data: data,
+//     success: function (result) {
+//       console.log(result);
+//       if ($.trim(result) == "empty") {
+//         document.getElementById("addNewAddressButon").disabled = false;
+
+//         alert("Lütfen boş alan bırakma");
+//       } else if ($.trim(result) == "error") {
+//         document.getElementById("addNewAddressButon").disabled = false;
+
+//         alert("Bir hata oluştu");
+//       } else if ($.trim(result) == "ok") {
+//         alert("başarıyla eklendi");
+//         window.location.reload();
+//       } else {
+//         alert("var birşeyler");
+//         document.getElementById("addNewAddressButon").disabled = false;
+//       }
+//     },
+//   });
+// }
+
 function addNewAddressButton() {
   document.getElementById("addNewAddressButon").disabled = true;
   var data = $("#addNewAddressForm").serialize();
@@ -178,19 +207,43 @@ function addNewAddressButton() {
     url: url + "inc/addNewAddress.php",
     data: data,
     success: function (result) {
+      console.log(result);
       if ($.trim(result) == "empty") {
         document.getElementById("addNewAddressButon").disabled = false;
-
-        alert("Lütfen boş alan bırakma");
+        alert("Lütfen boş alan bırakmayın.");
       } else if ($.trim(result) == "error") {
         document.getElementById("addNewAddressButon").disabled = false;
-
-        alert("Bir hata oluştu");
+        alert("Bir hata oluştu.");
       } else if ($.trim(result) == "ok") {
-        alert("başarıyla eklendi");
-        window.location.href = url + "/profile.php?process=adress";
+        alert("Adres başarıyla eklendi.");
+
+        // Mevcut form bilgilerini saklayalım
+        var siparisBilgileri = {
+          isimSoyisim: $("input[name='isim_soyisim']").val(),
+          telefon: $("input[name='telefon']").val(),
+          siparisNotu: $("textarea[name='siparis_notu']").val(),
+          secilenAdres: $("select[name='secilen_adres']").val(),
+        };
+
+        // Sayfayı yenilemeden önce saklanan bilgileri geri yükle
+        $("input[name='isim_soyisim']").val(siparisBilgileri.isimSoyisim);
+        $("input[name='telefon']").val(siparisBilgileri.telefon);
+        $("textarea[name='siparis_notu']").val(siparisBilgileri.siparisNotu);
+        $("select[name='secilen_adres']").val(siparisBilgileri.secilenAdres);
+
+        // Mevcut URL'yi kontrol et
+        var currentURL = window.location.href;
+
+        // Eğer profil sayfasından geldiysek
+        if (currentURL.indexOf("profile.php?process=newaddress") !== -1) {
+          // Sayfayı yenile
+          window.location.reload();
+        } else {
+          // Modalı kapat
+          $("#addressmodal").modal("hide");
+        }
       } else {
-        alert("var birşeyler");
+        alert("Bir şeyler ters gitti.");
         document.getElementById("addNewAddressButon").disabled = false;
       }
     },
@@ -329,6 +382,36 @@ function addCart() {
       } else {
         alert("var birşeyler");
         document.getElementById("addCartt").disabled = false;
+      }
+    },
+  });
+}
+
+function ordercompleted() {
+  document.getElementById("ordercomplet").disabled = true;
+  var data = $("#orderform").serialize();
+
+  $.ajax({
+    type: "POST",
+    url: url + "/inc/newOrder.php",
+    data: data,
+    success: function (result) {
+      console.log(result);
+      if ($.trim(result) == "empty") {
+        document.getElementById("ordercomplet").disabled = false;
+
+        alert("Lütfen boş alan bırakma");
+      } else if ($.trim(result) == "error") {
+        document.getElementById("ordercomplet").disabled = false;
+
+        alert("Bir hata oluştu");
+      } else if ($.trim(result) == "ok") {
+        alert("Siparişiniz için teşekkür ederiz.");
+        window.location.href = url + "/profile.php?process=order";
+      } else {
+        alert("var birşeyler");
+        console.log(result);
+        document.getElementById("ordercomplet").disabled = false;
       }
     },
   });

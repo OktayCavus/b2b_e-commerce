@@ -3,7 +3,7 @@
 $cartinfo = $db->prepare("SELECT * FROM sepet 
 INNER JOIN urunler on urunler.urunkodu = sepet.sepeturun WHERE sepetbayi = :b");
 $cartinfo->execute([
-    ':b' => $bcode,
+    ':b' => @$bcode,
 ]);
 
 
@@ -23,7 +23,7 @@ $cartinfo->execute([
                     <div class="mini-cart text-end">
                         <ul>
                             <li>
-                                <a class="cart-icon" href="#">
+                                <a class="cart-icon" href="cart.php">
                                     <i class="zmdi zmdi-shopping-cart"></i>
                                     <span><?php
                                             echo  $cartinfo->rowCount();
@@ -38,8 +38,9 @@ $cartinfo->execute([
                                     </div>
                                     <div class="all-cart-product clearfix">
                                         <?php
+                                        $totalprice = 0;
+
                                         if ($cartinfo->rowCount()) {
-                                            $totalprice = 0;
                                             foreach ($cartinfo as $cart) {
                                                 $ptax = $cart['kdv'] == 0 ? '' : "+KDV";
                                         ?>
@@ -63,12 +64,12 @@ $cartinfo->execute([
                                                 $totalprice += $cart['toplam'];
                                             }
                                         } else {
-                                            alert('SEPETİNİZDE ÜRÜN BULUNMUYOR', 'warning');
+                                            alert('SEPETİNİZDE ÜRÜN BULUNMUYOR', 'danger');
                                         }
                                         ?>
                                     </div>
                                     <div class="cart-totals">
-                                        <h5 class="mb-0">Genel Toplam: <span class="floatright"><?php echo $totalprice;  ?></span></h5>
+                                        <h5 class="mb-0">Genel Toplam: <span class="floatright"><?php echo $totalprice . " ₺";  ?></span></h5>
                                     </div>
                                     <div class="cart-bottom  clearfix">
                                         <a href="cart.php" class="button-one floatleft text-uppercase" data-text="Sepete git">Sepete git</a>
