@@ -24,7 +24,7 @@ $cartinfo->execute([
                     <div class="mini-cart text-end">
                         <ul>
                             <li>
-                                <a class="cart-icon" href="cart.php">
+                                <a class="cart-icon" href="cart">
                                     <i class="zmdi zmdi-shopping-cart"></i>
                                     <span><?php
                                             echo  $cartinfo->rowCount();
@@ -49,16 +49,18 @@ $cartinfo->execute([
 
                                                 <div class="single-cart clearfix">
                                                     <div class="cart-photo">
-                                                        <a href="<?php echo site . "/product.php?productsef=" . $cart['urunsef']; ?>"><img src="<?php echo site . "/uploads/product/" . $cart['urunkapak'] ?>" alt="<?php echo $cart['urunbaslik']; ?>" width="90" height="90" /></a>
+                                                        <a href="<?php echo site . "/product/" . $cart['urunsef']; ?>">
+                                                            <img src="<?php echo site . "/uploads/product/" . $cart['urunkapak'] ?>" alt="<?php echo $cart['urunbaslik']; ?>" width="90" height="90" />
+                                                        </a>
                                                     </div>
                                                     <div class="cart-info">
-                                                        <p><a href="<?php echo site . "/product.php?productsef=" . $cart['urunsef']; ?>"><?php echo $cart['urunbaslik']; ?></a></p>
+                                                        <p><a href="<?php echo site . "/product/" . $cart['urunsef']; ?>"><?php echo $cart['urunbaslik']; ?></a></p>
                                                         <p class="mb-0">Fiyat : <?php echo $cart['urunfiyat'] . "₺" . $ptax; ?></p>
                                                         <p class="mb-0">Adet : <?php echo $cart['sepetadet']; ?></p>
                                                         <p class="mb-0">Toplam <span style="color: red;">(KDV Dahil: <?php echo $cart['toplam'] . " ₺"; ?>)</span></p>
 
 
-                                                        <span class="cart-delete"><a onclick="return confirm('Ürünü sepetten silmek istiyor musunuz?');" href=" <?php echo site . "/cart.php?productdelete&code=" . $cart['sepeturun']; ?>"><i class="zmdi zmdi-close"></i></a></span>
+                                                        <span class="cart-delete"><a onclick="return confirm('Ürünü sepetten silmek istiyor musunuz?');" href=" <?php echo site . "/cart?productdelete&code=" . $cart['sepeturun']; ?>"><i class="zmdi zmdi-close"></i></a></span>
                                                     </div>
                                                 </div>
                                         <?php
@@ -73,7 +75,7 @@ $cartinfo->execute([
                                         <h5 class="mb-0">Genel Toplam: <span class="floatright"><?php echo $totalprice . " ₺";  ?></span></h5>
                                     </div>
                                     <div class="cart-bottom  clearfix">
-                                        <a href="cart.php" class="button-one floatleft text-uppercase" data-text="Sepete git">Sepete git</a>
+                                        <a href="<?php echo site; ?>/cart" class="button-one floatleft text-uppercase" data-text="Sepete git">Sepete git</a>
 
                                     </div>
                                 </div>
@@ -97,16 +99,16 @@ $cartinfo->execute([
                 <li><a href="<?php echo site; ?>">ÜRÜNLER</a></li>
 
                 <?php if (!isset($_SESSION['login'])) { ?>
-                    <li><a href="<?php echo site; ?>/login.php">KAYIT OL</a></li>
-                    <li><a href="<?php echo site; ?>/login.php">GİRİŞ YAP</a></li>
+                    <li><a href="<?php echo site; ?>/login-register">KAYIT OL</a></li>
+                    <li><a href="<?php echo site; ?>/login-register">GİRİŞ YAP</a></li>
 
                 <?php } else { ?>
-                    <li><a href="<?php echo site; ?>/profile.php?process=profile">HESABIM</a></li>
+                    <li><a href="<?php echo site; ?>/my-profile">HESABIM</a></li>
                     <li><a onclick="return confirm('Onaylıyor musunuz?');" href="<?php echo site; ?>/logout.php">ÇIKIŞ YAP</a></li>
                 <?php } ?>
 
 
-                <li><a href="<?php echo site; ?>/contact.php">BİZE ULAŞIN</a></li>
+                <li><a href="<?php echo site; ?>/contact-us">BİZE ULAŞIN</a></li>
             </ul>
         </nav>
     </div>

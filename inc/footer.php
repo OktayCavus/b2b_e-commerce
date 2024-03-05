@@ -24,10 +24,10 @@ echo !defined('security') ? die() : null;
 				<div class="single-footer">
 					<h3 class="footer-title  title-border">Hesabım</h3>
 					<ul class="footer-menu">
-						<li><a href="<?php echo site; ?>/login.php"><i class="zmdi zmdi-dot-circle"></i>Bayi Kayıt</a></li>
-						<li><a href="<?php echo site; ?>/login.php"><i class="zmdi zmdi-dot-circle"></i>Bayi Giriş</a></li>
-						<li><a href="<?php echo site; ?>/cart.php"><i class="zmdi zmdi-dot-circle"></i>Sepetim</a></li>
-						<li><a href="<?php echo site; ?>/contact.php"><i class="zmdi zmdi-dot-circle"></i>Bize Ulaşın</a></li>
+						<li><a href="<?php echo site; ?>/login-register"><i class="zmdi zmdi-dot-circle"></i>Bayi Kayıt</a></li>
+						<li><a href="<?php echo site; ?>/login-register"><i class="zmdi zmdi-dot-circle"></i>Bayi Giriş</a></li>
+						<li><a href="<?php echo site; ?>/cart"><i class="zmdi zmdi-dot-circle"></i>Sepetim</a></li>
+						<li><a href="<?php echo site; ?>/contact-us"><i class="zmdi zmdi-dot-circle"></i>Bize Ulaşın</a></li>
 
 					</ul>
 				</div>
@@ -43,12 +43,9 @@ echo !defined('security') ? die() : null;
 							':d' => 1,
 						]);
 						if ($pages->rowCount()) {
-							foreach ($pages as $page) { ?>
-								<li><a href="<?php echo site ?>/page.php?pagesef=<?php echo $page['sef'] ?>"><i class="zmdi zmdi-dot-circle"></i><?php echo $page['baslik'] ?></a></li>
+							foreach ($pages as $page) {
 
-
-						<?php
-
+								echo '<li><a href="' . site . '/page/' . $page['sef'] . '"><i class="zmdi zmdi-dot-circle"></i>' . $page['baslik'] . '<a /></li>';
 							}
 						}
 						?>
@@ -91,33 +88,33 @@ echo !defined('security') ? die() : null;
 <!-- all js here -->
 <!-- jquery latest version -->
 
-<script src="js/vendor/jquery-3.6.0.min.js"></script>
-<script src="js/vendor/jquery-migrate-3.3.2.min.js"></script>
+<script src="<?php echo site; ?>/js/vendor/jquery-3.6.0.min.js"></script>
+<script src="<?php echo site; ?>/js/vendor/jquery-migrate-3.3.2.min.js"></script>
 <!-- bootstrap js -->
-<script src="js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo site; ?>/js/bootstrap.bundle.min.js"></script>
 <!-- jquery.meanmenu js -->
-<script src="js/jquery.meanmenu.js"></script>
+<script src="<?php echo site; ?>/js/jquery.meanmenu.js"></script>
 <!-- slick.min js -->
-<script src="js/slick.min.js"></script>
+<script src="<?php echo site; ?>/js/slick.min.js"></script>
 <!-- jquery.treeview js -->
-<script src="js/jquery.treeview.js"></script>
+<script src="<?php echo site; ?>/js/jquery.treeview.js"></script>
 <!-- lightbox.min js -->
-<script src="js/lightbox.min.js"></script>
+<script src="<?php echo site; ?>/js/lightbox.min.js"></script>
 <!-- jquery-ui js -->
-<script src="js/jquery-ui.min.js"></script>
+<script src="<?php echo site; ?>/js/jquery-ui.min.js"></script>
 <!-- jquery.nivo.slider js -->
+
 <!-- jquery.nicescroll.min js -->
-<script src="js/jquery.nicescroll.min.js"></script>
+<script src="<?php echo site; ?>/js/jquery.nicescroll.min.js"></script>
 <!-- countdon.min js -->
-<script src="js/countdon.min.js"></script>
+<script src="<?php echo site; ?>/js/countdon.min.js"></script>
 <!-- wow js -->
-<script src="js/wow.min.js"></script>
+<script src="<?php echo site; ?>/js/wow.min.js"></script>
 <!-- plugins js -->
-<script src="js/plugins.js"></script>
+<script src="<?php echo site; ?>/js/plugins.js"></script>
 <!-- main js -->
-<script src="js/main.js"></script>
-<!-- custom js -->
-<script src="js/custom.js?v=<?php echo time(); ?>"></script>
+<script src="<?php echo site; ?>/js/main.js"></script>
+<script src="<?php echo site; ?>/js/custom.js?v=<?php echo time(); ?>"></script>
 </body>
 
 </html>

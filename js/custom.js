@@ -132,7 +132,7 @@ function passwordChangeButton() {
         alert("Bir hata oluştu");
       } else if ($.trim(result) == "ok") {
         alert("başarıyla güncellendi");
-        window.location.href = url + "/profile.php?process=profile";
+        window.location.href = url + "my-profile";
       } else {
         alert("var birşeyler");
         document.getElementById("passwordChangeButon").disabled = false;
@@ -160,7 +160,7 @@ function changeaddressbutton() {
         alert("Bir hata oluştu");
       } else if ($.trim(result) == "ok") {
         alert("başarıyla güncellendi");
-        window.location.href = url + "/profile.php?process=adress";
+        window.location.href = url + "address";
       } else {
         alert("var birşeyler");
         document.getElementById("changeaddressbuton").disabled = false;
@@ -196,7 +196,7 @@ function addNewAddressButton() {
 
         var currentURL = window.location.href;
 
-        if (currentURL.indexOf("profile.php?process=newaddress") !== -1) {
+        if (currentURL.indexOf("new-address") !== -1) {
           window.location.reload();
         } else {
           window.location.reload();
@@ -238,7 +238,7 @@ function addNewNotifButton() {
         alert(
           "Havale bildirimi gönderildi , yönetici kontrolden sonra tarafınıza ulaşım sağlanacaktır"
         );
-        window.location.href = url + "/profile.php?process=notification";
+        window.location.href = url + "notification";
       } else {
         alert("var birşeyler");
         document.getElementById("addNewNotifButon").disabled = false;
@@ -305,7 +305,7 @@ function sendMessage() {
         alert("Mesajınız en az 100 karakter olmalıdır!.");
       } else if ($.trim(result) == "ok") {
         alert("Mesajınız gönderildi , en kısa sürede dönüş sağlanacaktır ! .");
-        window.location.reload();
+        window.location.href = ulr + "thank-you";
       } else {
         alert("var birşeyler");
         console.log(result);
@@ -370,7 +370,7 @@ function ordercompleted() {
         alert("Bir hata oluştu");
       } else if ($.trim(result) == "ok") {
         alert("Siparişiniz için teşekkür ederiz.");
-        window.location.href = url + "/profile.php?process=order";
+        window.location.href = url + "order-complete";
       } else {
         alert("var birşeyler");
         console.log(result);

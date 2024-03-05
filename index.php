@@ -100,15 +100,15 @@ require_once 'inc/header.php'; ?>
 													<div class="product-img">
 
 														<span class="pro-price-2"><?php echo $row['urunfiyat'] . '₺' ?></span>
-														<a href="<?php echo site . '/product.php?productsef=' . $row['urunsef']; ?>"><img width="270" height="270" src="<?php echo site . '/uploads/product/' . $row['urunkapak']; ?>" alt="<?php echo $row['urunbaslik'] ?>" /></a>
+														<a href="<?php echo site . '/product/' . $row['urunsef']; ?>"><img width="270" height="270" src="<?php echo site . '/uploads/product/' . $row['urunkapak']; ?>" alt="<?php echo $row['urunbaslik'] ?>" /></a>
 													</div>
 													<div class="product-info clearfix text-center">
 														<div class="fix">
-															<h4 class="post-title"><a href="<?php echo site . '/product.php?productsef=' . $row['urunsef']; ?>"><?php echo $row['urunbaslik'] ?></a></h4>
+															<h4 class="post-title"><a href="<?php echo site . '/product/' . $row['urunsef']; ?>"><?php echo $row['urunbaslik'] ?></a></h4>
 														</div>
 
 														<div class="product-action clearfix">
-															<a href="<?php echo site . '/product.php?productsef=' . $row['urunsef']; ?>" title="Ürün Detayı"><i class="zmdi zmdi-arrow-right"></i> Detay</a>
+															<a href="<?php echo site . '/product/' . $row['urunsef']; ?>" title="Ürün Detayı"><i class="zmdi zmdi-arrow-right"></i> Detay</a>
 
 														</div>
 													</div>
@@ -132,7 +132,7 @@ require_once 'inc/header.php'; ?>
 								<ul>
 									<?php
 									if ($total > $lim) {
-										pagination($s, ceil($total / $lim), 'index.php?s=');
+										pagination($s, ceil($total / $lim), '?s=');
 									}
 									?>
 								</ul>

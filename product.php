@@ -237,7 +237,7 @@ require_once 'inc/header.php'; ?>
 									<?php
 
 									} else {
-										alert("Yorum yapabilmek için lütfen <a href= '" . site . "/login.php'>  giriş yapınız </a>", "danger");
+										alert("Yorum yapabilmek için lütfen <a href= '" . site . "/login-register'>  giriş yapınız </a>", "danger");
 									}
 
 

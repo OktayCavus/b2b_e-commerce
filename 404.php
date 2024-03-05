@@ -51,7 +51,7 @@ require_once 'inc/header.php'; ?>
 							</form>
 						</div>
 						<p class="text-uppercase">Or</p>
-						<a class="button-one submit-btn-4 go-to-home bg-white text-uppercase text-light-black" href="index.html" data-text="go to home page">go to home page</a>
+						<a class="button-one submit-btn-4 go-to-home bg-white text-uppercase text-light-black" href="<?php echo site; ?>" data-text="go to home page">go to home page</a>
 					</div>
 				</div>
 			</div>

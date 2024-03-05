@@ -142,10 +142,10 @@ if (@$_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
 																	<!-- Single-product start -->
 																	<div class="single-product">
 																		<div class="product-img">
-																			<a href="<?php echo site . "/product.php?productsef=" . $cart['urunsef']; ?>"><img src="<?php echo site . "/uploads/product/" . $cart['urunkapak'] ?>" width="270" height="270" alt="<?php echo $cart['urunbaslik']; ?>" /></a>
+																			<a href="<?php echo site . "/product/" . $cart['urunsef']; ?>"><img src="<?php echo site . "/uploads/product/" . $cart['urunkapak'] ?>" width="270" height="270" alt="<?php echo $cart['urunbaslik']; ?>" /></a>
 																		</div>
 																		<div class="product-info">
-																			<h4 class="post-title"><a class="text-light-black" href="<?php echo site . "/product.php?productsef=" . $cart['urunsef']; ?>"><?php echo $cart['urunbaslik']; ?></a></h4>
+																			<h4 class="post-title"><a class="text-light-black" href="<?php echo site . "/product/" . $cart['urunsef']; ?>"><?php echo $cart['urunbaslik']; ?></a></h4>
 
 																		</div>
 																	</div>
@@ -153,7 +153,7 @@ if (@$_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
 																</td>
 																<td class="product-price"><?php echo $cart['urunfiyat'] . "₺" . $ptax; ?></td>
 																<td class="product-quantity">
-																	<form action="<?php echo site . "/cart.php"; ?>" method="GET">
+																	<form action="<?php echo site . "/cart"; ?>" method="GET">
 																		<input type="number" min="1" value="<?php echo $cart['sepetadet']; ?>" name="qtybutton" class="cart-plus-minus-box">
 																		<input type="hidden" name="pcode" value="<?php echo $cart['sepeturun']; ?>">
 																		<button type="submit" class="btn btn-default">Güncelle</button>
@@ -162,7 +162,7 @@ if (@$_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
 
 																<td class="product-subtotal"><?php echo $cart['toplam'] . "₺"; ?></td>
 																<td class="product-remove">
-																	<a onclick="return confirm('Ürünü sepetten silmek istiyor musunuz?');" href="<?php echo site . "/cart.php?productdelete&code=" . $cart['sepeturun']; ?>"><i class="zmdi zmdi-close"></i></a>
+																	<a onclick="return confirm('Ürünü sepetten silmek istiyor musunuz?');" href="<?php echo site . "/cart?productdelete&code=" . $cart['sepeturun']; ?>"><i class="zmdi zmdi-close"></i></a>
 																</td>
 															</tr>
 														<?php
@@ -194,7 +194,7 @@ if (@$_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
 
 
 													</table>
-													<a href="<?php echo site . "/checkout.php" ?>"><button type="submit" data-text="get a quote" class="button-one submit-button mt-15">Ödeme yap & Siparişi Tamamla</button></a>
+													<a href="<?php echo site . "/check-out" ?>"><button type="submit" data-text="get a quote" class="button-one submit-button mt-15">Ödeme yap & Siparişi Tamamla</button></a>
 												</div>
 											</div>
 										</div>

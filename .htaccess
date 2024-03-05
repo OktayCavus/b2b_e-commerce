@@ -1,0 +1,25 @@
+RewriteEngine On
+ErrorDocument 404 /404.php
+
+RewriteRule ^cart(/?)$ cart.php [NC]
+RewriteRule ^my-account(/?)$ account.php [NC]
+RewriteRule ^check-out(/?)$ checkout.php [NC]
+RewriteRule ^contact-us(/?)$ contact.php [NC]
+RewriteRule ^login-register(/?)$ login.php [NC]
+RewriteRule ^profile(/?)$ profile.php [NC]
+RewriteRule ^my-profile(/?)$ profile.php?process=profile [NC]
+RewriteRule ^change-password(/?)$ profile.php?process=changePassword [NC]
+RewriteRule ^change-logo(/?)$ profile.php?process=changeLogo [NC]
+RewriteRule ^order(/?)$ profile.php?process=order [NC]
+RewriteRule ^address(/?)$ profile.php?process=adress [NC]
+RewriteRule ^notification(/?)$ profile.php?process=notification [NC]
+RewriteRule ^new-address(/?)$ profile.php?process=newaddress [NC]
+
+
+RewriteRule ^order-complete(/?)$ complete.php [NC]
+RewriteRule ^thank-you(/?)$ thankyou.php [NC]
+
+RewriteRule ^category/([0-9a-zA-Z-_]+)(/?)$ category.php?catsef=$1 [L]
+RewriteRule ^category/([0-9a-zA-Z-_]+)/s/(.*)([0-9a-zA-Z-_]+)(/?)$ category.php?catsef=$1&s=$2 [L]
+RewriteRule ^product/([0-9a-zA-Z-_]+)(/?)$ product.php?productsef=$1 [L]
+RewriteRule ^page/([0-9a-zA-Z-_]+)(/?)$ page.php?pagesef=$1 [L]

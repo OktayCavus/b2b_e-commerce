@@ -61,14 +61,13 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                         </div>
                         <div id="cat-treeview" class="widget-info product-cat boxscrol2">
                             <ul>
-                                <li> <a href="<?php echo site . "/profile.php?process=profile"; ?> "><span>Profil Bilgileri</a></span>
-                                <li> <a href="<?php echo site . "/profile.php?process=changePassword"; ?> "><span>Şifremi Değiştir</a></span>
-                                <li> <a href="<?php echo site . "/profile.php?process=changeLogo"; ?> "><span>Logo Düzenle</a></span>
-
-                                <li> <a href="<?php echo site . "/profile.php?process=order"; ?> "><span>Siparişlerim</a></span>
-                                <li> <a href="<?php echo site . "/profile.php?process=adress"; ?> "><span>Adreslerim</a></span>
-                                <li> <a href="<?php echo site . "/profile.php?process=notification"; ?> "><span>Havale Bildirimlerim</a></span>
-                                <li> <a href="<?php echo site . "/cart.php"; ?> "><span>Sepetim</a></span>
+                                <li> <a href="<?php echo site . "/my-profile"; ?> "><span>Profil Bilgileri</a></span>
+                                <li> <a href="<?php echo site . "/change-password"; ?> "><span>Şifremi Değiştir</a></span>
+                                <li> <a href="<?php echo site . "/change-logo"; ?> "><span>Logo Düzenle</a></span>
+                                <li> <a href="<?php echo site . "/order"; ?> "><span>Siparişlerim</a></span>
+                                <li> <a href="<?php echo site . "/address"; ?> "><span>Adreslerim</a></span>
+                                <li> <a href="<?php echo site . "/notification"; ?> "><span>Havale Bildirimlerim</a></span>
+                                <li> <a href="<?php echo site . "/cart"; ?> "><span>Sepetim</a></span>
                                 <li> <a href="<?php echo site . "/logout.php"; ?> "><span>Çıkış</a></span>
 
 
@@ -193,7 +192,7 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                                                         <tbody>
                                                             <?php foreach ($orders as $order) { ?>
                                                                 <tr>
-                                                                    <td><a href="<?php echo site . "/profile.php?process=orderdetail&code=" . $order['sipariskodu']; ?>" title="Sipariş detayı"><?php echo $order['sipariskodu']; ?></a></td>
+                                                                    <td><a href="<?php echo site . "/profile?process=orderdetail&code=" . $order['sipariskodu']; ?>" title="Sipariş detayı"><?php echo $order['sipariskodu']; ?></a></td>
                                                                     <td><?php echo $order['durumbaslik']; ?></td>
                                                                     <td><?php echo $order['siparistutar']; ?> ₺</td>
                                                                     <td><?php echo $order['siparisodeme'] == 1 ? 'Havale' : 'Kredi Kartı'; ?></td>
@@ -243,7 +242,7 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                                     <!-- Nav tabs -->
                                     <ul class="nav d-block shop-tab">
                                         <li><?php echo $code . " nolu siparişime ait ürünler (" . $orders->rowCount() . ")"; ?></li>
-                                        <li><a href="<?php echo site . "/profile.php?process=order"; ?>">Listeye Dön</a></li>
+                                        <li><a href="<?php echo site . "/profile?process=order"; ?>">Listeye Dön</a></li>
 
 
                                     </ul>
