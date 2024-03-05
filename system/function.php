@@ -167,31 +167,31 @@ function title()
             $title['keyw']   = mb_substr($sitekeyw, 0, 320, 'utf8');
             $title['img']    = $site . "/uploads/" . $crow->kapak;
         }
-    } else if (loc() == $site . "/login.php") {
+    } else if (loc() == $site . "/login-register") {
 
         $title['title']  = "Kayıt Ol/Giriş Yap - " . $sitebaslik;
         $title['desc']   = mb_substr($sitedesc, 0, 260, 'utf8');
         $title['keyw']   = mb_substr($sitekeyw, 0, 320, 'utf8');
         $title['img']    = $site . "/uploads/" . $sitelogo;
-    } else if (loc() == $site . "/contact.php") {
+    } else if (loc() == $site . "/contact-us") {
 
         $title['title']  = "Bize Ulaşın - " . $sitebaslik;
         $title['desc']   = mb_substr($sitedesc, 0, 260, 'utf8');
         $title['keyw']   = mb_substr($sitekeyw, 0, 320, 'utf8');
         $title['img']    = $site . "/uploads/" . $sitelogo;
-    } else if (loc() == $site . "/cart.php") {
+    } else if (loc() == $site . "/cart") {
 
         $title['title']  = "Sepetim - " . $sitebaslik;
         $title['desc']   = mb_substr($sitedesc, 0, 260, 'utf8');
         $title['keyw']   = mb_substr($sitekeyw, 0, 320, 'utf8');
         $title['img']    = $site . "/uploads/" . $sitelogo;
-    } else if (loc() == $site . "/checkout.php") {
+    } else if (loc() == $site . "/checkout") {
 
         $title['title']  = "Ödeme Yap - " . $sitebaslik;
         $title['desc']   = mb_substr($sitedesc, 0, 260, 'utf8');
         $title['keyw']   = mb_substr($sitekeyw, 0, 320, 'utf8');
         $title['img']    = $site . "/uploads/" . $sitelogo;
-    } else if (mb_substr(loc(), 0, 32) == $site . "/profile.php") {
+    } else if (mb_substr(loc(), 0, 28) == $site . "/profile") {
 
         $title['title']  = "Profilim - " . $sitebaslik;
         $title['desc']   = mb_substr($sitedesc, 0, 260, 'utf8');
