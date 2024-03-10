@@ -379,3 +379,57 @@ function ordercompleted() {
     },
   });
 }
+
+function forgetbutton() {
+  var data = $("#forgetpasswordform").serialize();
+  document.getElementById("forgetbuton").disabled = true;
+
+  $.ajax({
+    type: "POST",
+    url: url + "/inc/forgetpassword.php",
+    data: data,
+    success: function (result) {
+      console.log(result);
+      if ($.trim(result) == "empty") {
+        document.getElementById("forgetbuton").disabled = false;
+
+        alert("Boş alan bırakma");
+      } else if ($.trim(result) == "error") {
+        document.getElementById("forgetbuton").disabled = false;
+
+        alert("Bu bilgilere ait bayi bulunmuyor");
+      } else if ($.trim(result) == "ok") {
+        document.getElementById("forgetbuton").disabled = false;
+
+        alert("Şifre sıfırlama linki mail adresinize gönderildi");
+        window.location.href = url;
+      }
+    },
+  });
+}
+
+function forgetbutton2() {
+  var data = $("#forgetpasswordform2").serialize();
+  document.getElementById("forgetbuton2").disabled = true;
+
+  $.ajax({
+    type: "POST",
+    url: url + "/inc/recoverypassword.php",
+    data: data,
+    success: function (result) {
+      console.log(result);
+      if ($.trim(result) == "empty") {
+        document.getElementById("forgetbuton2").disabled = false;
+
+        alert("Boş alan bırakma");
+      } else if ($.trim(result) == "error") {
+        document.getElementById("forgetbuton2").disabled = false;
+
+        alert("Bu sıfırlama koduna ait veri bulunmuyor");
+      } else if ($.trim(result) == "ok") {
+        alert("Şifreniz başarıyla sıfırlandı");
+        window.location.href = url + "/login-register";
+      }
+    },
+  });
+}

@@ -51,7 +51,7 @@ if (@$_SESSION['login'] == @sha1(md5(IP() . $bcode))) {
 							<p class="text-gray">If you have an account with us, Please login!</p>
 							<input type="text" placeholder="E-posta ya da bayi kodu" name="bec">
 							<input type="password" placeholder="Password" name="bpass">
-							<p><a href="#" class="text-gray">Forget your password?</a></p>
+							<p><a href="<?php echo site; ?>/forget-password" class="text-gray">Forget your password?</a></p>
 							<button type="submit" id="loginbuton" onclick="loginbutton();" class="button-one submit-button mt-15">Giriş</button>
 						</div>
 					</form>

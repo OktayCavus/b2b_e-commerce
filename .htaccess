@@ -16,6 +16,10 @@ RewriteRule ^address(/?)$ profile.php?process=adress [NC]
 RewriteRule ^notification(/?)$ profile.php?process=notification [NC]
 RewriteRule ^new-address(/?)$ profile.php?process=newaddress [NC]
 
+RewriteRule ^forget-password(/?)$ forgetpassword.php [NC]
+RewriteRule ^recovery-password/([0-9a-zA-Z-_]+)(/?)$ recoverypassword.php?code=$1 [L]
+
+
 
 RewriteRule ^order-complete(/?)$ complete.php [NC]
 RewriteRule ^thank-you(/?)$ thankyou.php [NC]

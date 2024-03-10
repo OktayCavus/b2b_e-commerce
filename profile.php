@@ -68,7 +68,7 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
                                 <li> <a href="<?php echo site . "/address"; ?> "><span>Adreslerim</a></span>
                                 <li> <a href="<?php echo site . "/notification"; ?> "><span>Havale Bildirimlerim</a></span>
                                 <li> <a href="<?php echo site . "/cart"; ?> "><span>Sepetim</a></span>
-                                <li> <a href="<?php echo site . "/logout.php"; ?> "><span>Çıkış</a></span>
+                                <li> <a href="<?php echo site . "/logout"; ?> "><span>Çıkış</a></span>
 
 
                                 </li>
