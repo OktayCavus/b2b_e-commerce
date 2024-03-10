@@ -73,7 +73,7 @@ if (@$_SESSION['login'] == @sha1(md5(IP() . $bcode))) {
 							<input type="text" placeholder="Tax No" name="bvno">
 							<input type="text" placeholder="Vergi Dairesi" name="bvd">
 
-							<button type="submit" id="registerbuton" onclick="registerbutton();" class="button-one submit-button mt-15">regiter</button>
+							<button type="submit" id="registerbuton" onclick="registerbutton();" class="button-one submit-button mt-15">register</button>
 						</div>
 					</form>
 

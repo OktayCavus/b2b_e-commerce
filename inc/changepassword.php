@@ -35,6 +35,17 @@ if ($_POST) {
             ]);
 
             if ($result) {
+                $log = $db->prepare("INSERT INTO bayi_loglar SET 
+                logbayi = :b,
+                logip = :i,
+                logaciklama = :a
+            ");
+                $log->execute([
+                    ':b' => $par->bayikodu,
+                    ':i' => IP(),
+                    ':a' => 'Kullanıcı şifresini değiştirdi'
+                ]);
+
                 echo 'ok';
             } else {
                 echo 'error';

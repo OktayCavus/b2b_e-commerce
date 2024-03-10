@@ -26,6 +26,18 @@ if ($_POST) {
         if ($login->rowCount()) {
             $par = $login->fetch(PDO::FETCH_OBJ);
             if ($par->bayidurum == 1) {
+
+                $log = $db->prepare("INSERT INTO bayi_loglar SET 
+                logbayi = :b,
+                logip = :i,
+                logaciklama = :a
+            ");
+                $log->execute([
+                    ':b' => $par->bayikodu,
+                    ':i' => IP(),
+                    ':a' => 'Giriş Yapıldı'
+                ]);
+
                 $encode = sha1(md5(IP() . $par->bayikodu));
                 $_SESSION['login'] = $encode;
                 $_SESSION['id'] = $par->id;

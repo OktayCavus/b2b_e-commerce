@@ -21,9 +21,16 @@ if ($_POST) {
                 ]);
                 $productrow = $prow->fetch(PDO::FETCH_OBJ);
 
+                if (@$bgift > 0) {
+                    $calc = $productrow->urunfiyat * $bgift / 100;
+                    $price = $productrow->urunfiyat - $calc;
+                } else {
+                    $price = $productrow->urunfiyat;
+                }
+
                 if ($productrow) {
-                    // Ürün varsa, toplam fiyatları hesaplayalım
-                    $totalprice = ($productrow->urunfiyat) * $qty;
+
+                    $totalprice = ($price) * $qty;
                     $tax = $totalprice * ($row->sitekdv / 100);
                     $subtotal = $totalprice + $tax;
 
@@ -38,7 +45,7 @@ if ($_POST) {
                         $currentCartRow = $currentCart->fetch(PDO::FETCH_OBJ);
                         $currentqty = $currentCartRow->sepetadet + $qty;
 
-                        $totalprice = ($productrow->urunfiyat) * $currentqty;
+                        $totalprice = ($price) * $currentqty;
                         $tax = $totalprice * ($row->sitekdv / 100);
                         $subtotal = $totalprice + $tax;
 
@@ -51,7 +58,7 @@ if ($_POST) {
 
                         $result->execute([
                             ':sa' => $currentqty,
-                            ':bf' => $productrow->urunfiyat,
+                            ':bf' => $price,
                             ':tf' => $subtotal,
                             ':u' => $productrow->urunkodu,
                             ':b' => $bcode,
@@ -73,7 +80,7 @@ if ($_POST) {
                             ':sb' => $bcode,
                             ':su' => $productrow->urunkodu,
                             ':sa' => $qty,
-                            ':bf' => $productrow->urunfiyat,
+                            ':bf' => $price,
                             ':tf' => $subtotal,
                             ':ta' => date('Y-m-d'),
                             ':si' => date("Y-m-d", strtotime("+7 days")),
@@ -82,12 +89,21 @@ if ($_POST) {
                     }
 
                     if ($result->rowCount()) {
+                        $log = $db->prepare("INSERT INTO bayi_loglar SET 
+                            logbayi = :b,
+                            logip = :i,
+                            logaciklama = :a
+                            ");
+                        $log->execute([
+                            ':b' => $bcode,
+                            ':i' => IP(),
+                            ':a' => $productrow->urunkodu . " nolu ürün sepete eklendi"
+                        ]);
                         echo 'ok';
                     } else {
                         echo 'error';
                     }
                 } else {
-                    // Ürün bulunamadıysa hata döndür
                     echo 'error';
                 }
             }

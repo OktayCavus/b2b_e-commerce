@@ -83,6 +83,18 @@ if ($_POST) {
                 }
             }
 
+            $log = $db->prepare("INSERT INTO bayi_loglar SET 
+            logbayi = :b,
+            logip = :i,
+            logaciklama = :a
+        ");
+            $log->execute([
+                ':b' => $par->bayikodu,
+                ':i' => IP(),
+                ':a' => $code .  ' nolu siparişi oluşturdu'
+            ]);
+
+
             $deletecart = $db->prepare("DELETE FROM sepet WHERE sepetbayi = :b");
             $deletecart->execute([
                 ':b' => $bcode

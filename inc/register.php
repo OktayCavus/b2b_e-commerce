@@ -17,8 +17,9 @@ if ($_POST) {
     $bphone = post("bphone");
     $bvno = post("bvno");
     $bvd = post("bvd");
-    $bcode = uniqid();
+    $bcodee = uniqid();
     $crypto = sha1(md5($bpass));
+
     if (!$bname || !$bmail || !$bpass || !$bpass2 || !$bphone || !$bvno || !$bvd) {
         // ! burası custom.js'deki empty'ye karşılık gelsin diye oluşturuldu
         echo "empty";
@@ -48,7 +49,7 @@ if ($_POST) {
                     ");
 
                     $result->execute([
-                        ':bcode' => $bcode,
+                        ':bcode' => $bcodee,
                         ':bname' => $bname,
                         ':bmail' => $bmail,
                         ':bpass' => $crypto,
@@ -59,6 +60,46 @@ if ($_POST) {
 
 
                     if ($result->rowCount()) {
+
+
+                        $mail = new PHPMailer();
+                        $mail->Host = $row->smtphost;
+                        $mail->Port = $row->smtpport;
+                        $mail->SMTPSecure = $row->smtpsec;
+                        $mail->Username = $row->smtpmail;
+                        $mail->Password = $row->smtpsifre;
+                        $mail->SMTPAuth = true;
+                        // ! SMTP sınıfı başlasın
+                        $mail->IsSMTP();
+                        $mail->AddAddress($row->smtpkime);
+
+                        $mail->From = $row->smtpmail;
+                        $mail->FromName = "Mail başlığı burası";
+                        $mail->CharSet = "UTF-8";
+                        $mail->Subject = "Yeni bayi kaydı";
+                        $mailcontent = "
+                        <p><b>Bayi Kodu:</b>" . $bcode . "</p>
+                        <p><b>Bayi Adı:</b>" . $bname . "</p>
+                        <p><b>Bayi Mail:</b>" . $bmail . "</p>
+                        <p><b>Bayi Telefon:</b>" . $bphone . "</p>
+                        <p><b>Vergi No:</b>" . $bvno . "</p>
+                        <p><b>Vergi Dairesi:</b>" . $bvd . "</p>
+                        <p><b>IP:</b>" . IP() . "</p>
+                        ";
+
+                        $mail->MsgHTML($mailcontent);
+                        $mail->Send();
+
+                        $log = $db->prepare("INSERT INTO bayi_loglar SET 
+                        logbayi = :b,
+                        logip = :i,
+                        logaciklama = :a
+                    ");
+                        $log->execute([
+                            ':b' => $bcodee,
+                            ':i' => IP(),
+                            ':a' => 'Yeni kayıt oluşturuldu'
+                        ]);
                         echo "ok";
                     } else {
                         echo "error";

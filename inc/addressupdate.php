@@ -34,6 +34,16 @@ if ($_POST) {
 
 
         if ($result) {
+            $log = $db->prepare("INSERT INTO bayi_loglar SET 
+            logbayi = :b,
+            logip = :i,
+            logaciklama = :a
+            ");
+            $log->execute([
+                ':b' => $bcode,
+                ':i' => IP(),
+                ':a' => $addressid . " id'li adresi güncelledi"
+            ]);
             echo  "ok";
         } else {
             echo 'error';

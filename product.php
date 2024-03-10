@@ -27,7 +27,14 @@ require_once 'inc/header.php'; ?>
 		':se' => $sef,
 	]);
 	if ($product->rowCount()) {
+		$price = 0;
 		$row = $product->fetch(PDO::FETCH_OBJ);
+		if (@$bgift > 0) {
+			$calc = $row->urunfiyat * $bgift / 100;
+			$price = $row->urunfiyat - $calc;
+		} else {
+			$price = $row->urunfiyat;
+		}
 	} else {
 		go(site);
 	}
@@ -113,7 +120,16 @@ require_once 'inc/header.php'; ?>
 
 							</div>
 							<div class="fix mb-20">
-								<span class="pro-price"><?php echo $row->urunfiyat . "₺"; ?>
+
+								<span class="pro-price">
+									<?php
+									if (@$bgift > 0) {
+										echo '<strike>' . $row->urunfiyat . '₺</strike> ' . $price . '₺';
+									} else {
+										echo $price . '₺';
+									}
+									?>
+								</span>
 
 								</span>
 							</div>

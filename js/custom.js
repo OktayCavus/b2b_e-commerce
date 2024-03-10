@@ -33,7 +33,7 @@ function registerbutton() {
         alert("Bir hata oluştu");
       } else if ($.trim(result) == "ok") {
         alert("başarıyla oluşturuldu yönetici onayından sonra aktifleşecek");
-        window.location.href = url;
+        window.location.href = url + "login-register";
       } else {
         alert("var birşeyler");
       }
@@ -305,7 +305,7 @@ function sendMessage() {
         alert("Mesajınız en az 100 karakter olmalıdır!.");
       } else if ($.trim(result) == "ok") {
         alert("Mesajınız gönderildi , en kısa sürede dönüş sağlanacaktır ! .");
-        window.location.href = ulr + "thank-you";
+        window.location.href = url + "thank-you";
       } else {
         alert("var birşeyler");
         console.log(result);

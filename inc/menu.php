@@ -8,6 +8,7 @@ $cartinfo->execute([
 ]);
 
 
+
 ?>
 
 
@@ -55,7 +56,7 @@ $cartinfo->execute([
                                                     </div>
                                                     <div class="cart-info">
                                                         <p><a href="<?php echo site . "/product/" . $cart['urunsef']; ?>"><?php echo $cart['urunbaslik']; ?></a></p>
-                                                        <p class="mb-0">Fiyat : <?php echo $cart['urunfiyat'] . "₺" . $ptax; ?></p>
+                                                        <p class="mb-0">Fiyat : <?php echo $cart['birimfiyat'] . "₺" . $ptax; ?></p>
                                                         <p class="mb-0">Adet : <?php echo $cart['sepetadet']; ?></p>
                                                         <p class="mb-0">Toplam <span style="color: red;">(KDV Dahil: <?php echo $cart['toplam'] . " ₺"; ?>)</span></p>
 
@@ -104,7 +105,7 @@ $cartinfo->execute([
 
                 <?php } else { ?>
                     <li><a href="<?php echo site; ?>/my-profile">HESABIM</a></li>
-                    <li><a onclick="return confirm('Onaylıyor musunuz?');" href="<?php echo site; ?>/logout.php">ÇIKIŞ YAP</a></li>
+                    <li><a onclick="return confirm('Onaylıyor musunuz?');" href="<?php echo site; ?>/logout">ÇIKIŞ YAP</a></li>
                 <?php } ?>
 
 

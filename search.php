@@ -2,6 +2,7 @@
 
 define('security', true);
 
+
 require_once 'inc/header.php'; ?>
 <!-- WRAPPER START -->
 <div class="wrapper bg-dark-white">
@@ -11,51 +12,20 @@ require_once 'inc/header.php'; ?>
 	<!-- HEADER-AREA END -->
 	<!-- Mobile-menu start -->
 	<?php require_once 'inc/mobilmenu.php'; ?>
-
-	<?php
-
-	$catsef  = get('catsef');
-	if (!$catsef) {
-		go(site);
-	}
-
-	$catresult = $db->prepare("SELECT id,katbaslik,katsef,katdurum,katresim FROM urun_kategoriler WHERE katsef=:se AND katdurum=:d");
-	$catresult->execute([':se' => $catsef, 'd' => 1]);
-	if ($catresult->rowCount()) {
-
-		$catrow = $catresult->fetch(PDO::FETCH_OBJ);
-	} else {
-		go(site);
-	}
-
-	$s = @intval(get('s'));
-	if (!$s) {
-		$s = 1;
-	}
-
-	$plist = $db->prepare("SELECT * FROM urunler WHERE urundurum=:d AND urunkatid=:v ORDER BY uruntarih DESC");
-	$plist->execute([':d' => 1, ':v' => $catrow->id]);
-
-	$total = $plist->rowCount();
-	$lim   = 9;
-	$show  = $s * $lim - $lim;
-
-	?>
 	<!-- Mobile-menu end -->
 	<!-- HEADING-BANNER START -->
-	<div class="heading-banner-area overlay-bg" style="background: rgba(0, 0, 0, 0) url(<?php echo site; ?>/uploads/product/<?php echo $catrow->katresim; ?>) no-repeat scroll center center / cover;">
+	<div class="heading-banner-area overlay-bg" style="background: rgba(0, 0, 0, 0) url(<?php echo site; ?>/uploads/indexbanner.png) no-repeat scroll center center / cover;">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="heading-banner">
 						<div class="heading-banner-title">
-							<h2><?php echo $catrow->katbaslik; ?></h2>
+							<h2>Ürün Arama Sonuçları</h2>
 						</div>
 						<div class="breadcumbs pb-15">
 							<ul>
 								<li><a href="<?php echo site; ?>">Ana Sayfa</a></li>
-								<li><a href="#">Kategori</a></li>
-								<li><?php echo $catrow->katbaslik; ?></li>
+								<li>Ürünler</li>
 							</ul>
 						</div>
 					</div>
@@ -68,56 +38,95 @@ require_once 'inc/header.php'; ?>
 	<div class="product-area pt-80 pb-80 product-style-2">
 		<div class="container">
 			<div class="row">
-
 				<?php require_once 'inc/sidebar.php'; ?>
+
 
 				<?php
 
+				$s = @intval(get('s'));
+				if (!$s) {
+					$s = 1;
+				}
 
-				$plist = $db->prepare("SELECT * FROM urunler WHERE urundurum=:d AND urunkatid=:v ORDER BY uruntarih DESC LIMIT :show,:lim");
+				$pname = @get('q');
+				$cat   = @get('kat');
+				$price1 = @get('price1');
+				$price2 = @get('price2');
 
-				$plist->bindValue(':d', (int) 1, PDO::PARAM_INT);
-				$plist->bindValue(':v', $catrow->id, PDO::PARAM_INT);
-				$plist->bindValue(':show', $show, PDO::PARAM_INT);
-				$plist->bindValue(':lim', $lim, PDO::PARAM_INT);
-				$plist->execute();
+				$sql   		= "SELECT * FROM urunler";
+				$where 		= null;
+				$execute	= [];
+
+				if ($pname) {
+					$where   .= " urunbaslik LIKE :baslik AND urundurum=:d AND ";
+					$execute[':baslik'] = "%$pname%";
+					$execute[':d']      = 1;
+				}
+
+				if ($cat) {
+					$where   .= " urunkatid LIKE :kat AND urundurum=:d AND ";
+					$execute[':kat']    = "%$cat%";
+					$execute[':d']      = 1;
+				}
+
+				if ($price1) {
+					$where   .= " urunfiyat >= :price1 AND urundurum=:d AND ";
+					$execute[':price1']    = $price1;
+					$execute[':d']      = 1;
+				}
+
+				if ($price2) {
+					$where   .= " urunfiyat <= :price2 AND urundurum=:d AND ";
+					$execute[':price2']    = $price2;
+					$execute[':d']      = 1;
+				}
+
+				if ($where != null) {
+					$sql .= ' WHERE ' . $where;
+					$sql  = rtrim($sql, ' AND ');
+				}
+
+				$query    = $db->prepare($sql);
+				$query->execute($execute);
+
+				$total    = $query->rowCount();
+				$lim      = 12;
+				$showw    = $s * $lim - $lim;
+
+
+				$query2    = $db->prepare($sql . " ORDER BY uruntarih DESC LIMIT $showw,$lim");
+				$query2->execute($execute);
 
 				if ($s > ceil($total / $lim)) {
 					$s = 1;
 				}
 
-
-
-
-
 				?>
-
 				<div class="col-lg-9 order-1 order-lg-2">
 					<!-- Shop-Content End -->
 					<div class="shop-content mt-tab-30 mb-30 mb-lg-0">
 						<div class="product-option mb-30 clearfix">
+							<!-- Nav tabs -->
 
-							<p class="mb-0"><?php echo $catrow->katbaslik; ?> Ürün Listesi (<?php echo $total; ?>)</p>
+							<p class="mb-0">Ürün Arama Listesi <?php echo $total; ?></p>
+
 
 						</div>
 						<!-- Tab panes -->
 						<div class="tab-content">
 							<div class="tab-pane active" id="grid-view">
 								<div class="row">
-
-									<?php if ($plist->rowCount()) {
-
+									<!-- Single-product start -->
+									<?php if ($query2->rowCount()) {
 										$price = 0;
-										foreach ($plist as $row) {
+										foreach ($query2 as $row) {
 
 											if (@$bgift > 0) {
-
-												$calc  = $row['urunfiyat'] * $bgift / 100;
+												$calc = $row['urunfiyat'] * $bgift / 100;
 												$price = $row['urunfiyat'] - $calc;
 											} else {
 												$price = $row['urunfiyat'];
-											}
-									?>
+											} ?>
 
 											<div class="col-lg-4 col-md-6">
 												<div class="single-product">
@@ -137,26 +146,22 @@ require_once 'inc/header.php'; ?>
 														</div>
 
 														<div class="product-action clearfix">
-															<a href="<?php echo site . '/product/' . $row['urunsef']; ?>" title="Ürün Detayı"><i class="zmdi zmdi-arrow-right"></i></a>
+															<a href="<?php echo site . '/product/' . $row['urunsef']; ?>" title="Ürün Detayı"><i class="zmdi zmdi-arrow-right"></i> Detay</a>
+
 														</div>
 													</div>
 												</div>
 											</div>
-
-									<?php
-
-										}
+									<?php }
 									} else {
-
-										alert('Ürün bulunmuyor', 'danger');
+										alert('Kriterlere göre ürün bulunmuyor', 'danger');
 									} ?>
-
-
-
+									<!-- Single-product end -->
 								</div>
 							</div>
 
 						</div>
+
 
 
 						<!-- Pagination start -->
@@ -165,7 +170,7 @@ require_once 'inc/header.php'; ?>
 								<ul>
 									<?php
 									if ($total > $lim) {
-										pagination($s, ceil($total / $lim), 'category/' . $catsef . '/s/');
+										pagination($s, ceil($total / $lim), 'search.php?q=' . $pname . '&kat=' . $kat . '&price1=' . $price1 . '&price2=' . $price2 . '');
 									}
 									?>
 								</ul>
@@ -181,4 +186,6 @@ require_once 'inc/header.php'; ?>
 		</div>
 	</div>
 	<!-- PRODUCT-AREA END -->
-	<?php require_once 'inc/footer.php'; ?>
+	<!-- FOOTER START -->
+	<footer>
+		<?php require_once 'inc/footer.php'; ?>

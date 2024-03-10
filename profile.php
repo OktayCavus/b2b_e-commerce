@@ -154,7 +154,7 @@ if ($_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
 
                             $orders = $db->prepare("SELECT * FROM siparisler
                                 INNER JOIN durumkodlari ON durumkodlari.durumkodu = siparisler.siparisdurum
-                            WHERE siparisbayi=:b");
+                            WHERE siparisbayi=:b ");
                             $orders->execute([':b' => $bcode]);
 
                         ?>

@@ -40,6 +40,16 @@ if ($_POST) {
 
             ]);
             if ($result->rowCount()) {
+                $log = $db->prepare("INSERT INTO bayi_loglar SET 
+                logbayi = :b,
+                logip = :i,
+                logaciklama = :a
+                ");
+                $log->execute([
+                    ':b' => $bcode,
+                    ':i' => IP(),
+                    ':a' => $product . " nolu ürüne yorum yaptı"
+                ]);
                 echo "ok";
             } else {
                 echo 'error';

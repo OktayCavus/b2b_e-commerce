@@ -18,7 +18,7 @@ echo !defined('security') ? die() : null;
 
                             <?php } else { ?>
                                 <li><a href="<?php echo site; ?>/my-profile">HESABIM</a></li>
-                                <li><a onclick="return confirm('Onaylıyor musunuz?');" href="<?php echo site; ?>/logout.php">ÇIKIŞ YAP</a></li>
+                                <li><a onclick="return confirm('Onaylıyor musunuz?');" href="<?php echo site; ?>/logout">ÇIKIŞ YAP</a></li>
                             <?php } ?>
 
 

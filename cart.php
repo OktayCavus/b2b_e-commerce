@@ -46,8 +46,14 @@ if (@$_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
 				':k' => $pcode,
 			]);
 			$productrow = $prow->fetch(PDO::FETCH_OBJ);
+			if (@$bgift > 0) {
+				$calc = $productrow->urunfiyat * $bgift / 100;
+				$price = $productrow->urunfiyat - $calc;
+			} else {
+				$price = $productrow->urunfiyat;
+			}
 
-			$totalprice = ($productrow->urunfiyat) * $qtybutton;
+			$totalprice = ($price) * $qtybutton;
 			$tax = $totalprice * ($row->sitekdv / 100);
 			$subtotal = $totalprice + $tax;
 
@@ -60,7 +66,7 @@ if (@$_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
 
 			$result->execute([
 				':sa' => $qtybutton,
-				':bf' => $productrow->urunfiyat,
+				':bf' => $price,
 				':tf' => $subtotal,
 				':u' => $productrow->urunkodu,
 				':b' => $bcode,
@@ -151,7 +157,7 @@ if (@$_SESSION['login'] != @sha1(md5(IP() . $bcode))) {
 																	</div>
 																	<!-- Single-product end -->
 																</td>
-																<td class="product-price"><?php echo $cart['urunfiyat'] . "₺" . $ptax; ?></td>
+																<td class="product-price"><?php echo $cart['birimfiyat'] . "₺" . $ptax; ?></td>
 																<td class="product-quantity">
 																	<form action="<?php echo site . "/cart"; ?>" method="GET">
 																		<input type="number" min="1" value="<?php echo $cart['sepetadet']; ?>" name="qtybutton" class="cart-plus-minus-box">

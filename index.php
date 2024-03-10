@@ -93,23 +93,35 @@ require_once 'inc/header.php'; ?>
 									<!-- Single-product start -->
 									<?php if ($plist->rowCount()) {
 
-										foreach ($plist as $row) { ?>
+										$price = 0;
+
+										foreach ($plist as $row) {
+											if (@$bgift > 0) {
+												$calc = $row['urunfiyat'] * $bgift / 100;
+												$price = $row['urunfiyat'] - $calc;
+											} else {
+												$price = $row['urunfiyat'];
+											}
+
+									?>
 
 											<div class="col-lg-4 col-md-6">
 												<div class="single-product">
 													<div class="product-img">
+														<?php if (@$bgift > 0) { ?>
 
-														<span class="pro-price-2"><?php echo $row['urunfiyat'] . '₺' ?></span>
+															<span class="pro-price-2"><strike><?php echo $row['urunfiyat'] . '₺'; ?></strike> <?php echo $price . '₺'; ?></span>
+														<?php } else { ?>
+															<span class="pro-price-2"><?php echo $price . '₺'; ?></span>
+														<?php } ?>
 														<a href="<?php echo site . '/product/' . $row['urunsef']; ?>"><img width="270" height="270" src="<?php echo site . '/uploads/product/' . $row['urunkapak']; ?>" alt="<?php echo $row['urunbaslik'] ?>" /></a>
 													</div>
 													<div class="product-info clearfix text-center">
 														<div class="fix">
 															<h4 class="post-title"><a href="<?php echo site . '/product/' . $row['urunsef']; ?>"><?php echo $row['urunbaslik'] ?></a></h4>
 														</div>
-
 														<div class="product-action clearfix">
 															<a href="<?php echo site . '/product/' . $row['urunsef']; ?>" title="Ürün Detayı"><i class="zmdi zmdi-arrow-right"></i> Detay</a>
-
 														</div>
 													</div>
 												</div>
