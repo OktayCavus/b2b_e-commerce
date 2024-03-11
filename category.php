@@ -108,14 +108,14 @@ require_once 'inc/header.php'; ?>
 									<?php if ($plist->rowCount()) {
 
 										$price = 0;
-										foreach ($plist as $row) {
+										foreach ($plist as $rowl) {
 
 											if (@$bgift > 0) {
 
-												$calc  = $row['urunfiyat'] * $bgift / 100;
-												$price = $row['urunfiyat'] - $calc;
+												$calc  = $rowl['urunfiyat'] * $bgift / 100;
+												$price = $rowl['urunfiyat'] - $calc;
 											} else {
-												$price = $row['urunfiyat'];
+												$price = $rowl['urunfiyat'];
 											}
 									?>
 
@@ -125,19 +125,19 @@ require_once 'inc/header.php'; ?>
 
 														<?php if (@$bgift > 0) { ?>
 
-															<span class="pro-price-2"><strike><?php echo $row['urunfiyat'] . '₺'; ?></strike> <?php echo $price . '₺'; ?></span>
+															<span class="pro-price-2"><strike><?php echo $rowl['urunfiyat'] . '₺'; ?></strike> <?php echo $price . '₺'; ?></span>
 														<?php } else { ?>
 															<span class="pro-price-2"><?php echo $price . '₺'; ?></span>
 														<?php } ?>
-														<a href="<?php echo site . '/product/' . $row['urunsef']; ?>"><img width="270" height="270" src="<?php echo site . '/uploads/product/' . $row['urunkapak']; ?>" alt="<?php echo $row['urunbaslik'] ?>" /></a>
+														<a href="<?php echo site . '/product/' . $rowl['urunsef']; ?>"><img width="270" height="270" src="<?php echo site . '/uploads/product/' . $rowl['urunkapak']; ?>" alt="<?php echo $rowl['urunbaslik'] ?>" /></a>
 													</div>
 													<div class="product-info clearfix text-center">
 														<div class="fix">
-															<h4 class="post-title"><a href="<?php echo site . '/product/' . $row['urunsef']; ?>"><?php echo $row['urunbaslik'] ?></a></h4>
+															<h4 class="post-title"><a href="<?php echo site . '/product/' . $rowl['urunsef']; ?>"><?php echo $rowl['urunbaslik'] ?></a></h4>
 														</div>
 
 														<div class="product-action clearfix">
-															<a href="<?php echo site . '/product/' . $row['urunsef']; ?>" title="Ürün Detayı"><i class="zmdi zmdi-arrow-right"></i></a>
+															<a href="<?php echo site . '/product/' . $rowl['urunsef']; ?>" title="Ürün Detayı"><i class="zmdi zmdi-arrow-right"></i></a>
 														</div>
 													</div>
 												</div>

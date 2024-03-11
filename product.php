@@ -28,12 +28,12 @@ require_once 'inc/header.php'; ?>
 	]);
 	if ($product->rowCount()) {
 		$price = 0;
-		$row = $product->fetch(PDO::FETCH_OBJ);
+		$rowp = $product->fetch(PDO::FETCH_OBJ);
 		if (@$bgift > 0) {
-			$calc = $row->urunfiyat * $bgift / 100;
-			$price = $row->urunfiyat - $calc;
+			$calc = $rowp->urunfiyat * $bgift / 100;
+			$price = $rowp->urunfiyat - $calc;
 		} else {
-			$price = $row->urunfiyat;
+			$price = $rowp->urunfiyat;
 		}
 	} else {
 		go(site);
@@ -43,7 +43,7 @@ require_once 'inc/header.php'; ?>
 	// ! ÜRÜN YRUMLARI SORGU 
 	$comments = $db->prepare("SELECT * FROM urun_yorumlar WHERE yorumurun = :yu AND yorumdurum = :yd ORDER BY yorumtarih DESC");
 	$comments->execute([
-		':yu' => $row->urunkodu,
+		':yu' => $rowp->urunkodu,
 		':yd' => 1
 	]);
 
@@ -56,20 +56,20 @@ require_once 'inc/header.php'; ?>
 
 	<!-- Mobile-menu end -->
 	<!-- HEADING-BANNER START -->
-	<div class="heading-banner-area overlay-bg" style="background: rgba(0, 0, 0, 0) url(<?php echo site; ?>/uploads/product/<?php echo $row->urunbanner; ?>) no-repeat scroll center center / cover;">
+	<div class="heading-banner-area overlay-bg" style="background: rgba(0, 0, 0, 0) url(<?php echo site; ?>/uploads/product/<?php echo $rowp->urunbanner; ?>) no-repeat scroll center center / cover;">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
 					<div class="heading-banner">
 						<div class="heading-banner-title">
-							<h2><?php echo $row->urunbaslik; ?></h2>
+							<h2><?php echo $rowp->urunbaslik; ?></h2>
 						</div>
 						<div class="breadcumbs pb-15">
 							<ul>
 								<li><a href="<?php echo site; ?>">Home</a></li>
 								<li>Ürün</li>
 
-								<li><?php echo $row->urunbaslik; ?></li>
+								<li><?php echo $rowp->urunbaslik; ?></li>
 							</ul>
 						</div>
 					</div>
@@ -91,15 +91,15 @@ require_once 'inc/header.php'; ?>
 							// ! ürün resim
 							$pimage = $db->prepare("SELECT resimurun,resimdosya,resimdurum,kapak FROM urun_resimler WHERE resimurun = :u");
 							$pimage->execute([
-								':u' => $row->urunkodu,
+								':u' => $rowp->urunkodu,
 							]);
 							if ($pimage->rowCount()) {
 								foreach ($pimage as $pim) {
 
 							?>
 									<div>
-										<img src="<?php echo site . "/uploads/product/" . $pim['resimdosya']; ?>" alt=" <?php echo $row->urunbaslik; ?>" width=" 370" height="450" />
-										<a class="view-full-screen" href="<?php echo site . "/uploads/product/" . $pim['resimdosya']; ?>" data-lightbox="roadtrip" data-title="<?php echo $row->urunbaslik; ?>">
+										<img src="<?php echo site . "/uploads/product/" . $pim['resimdosya']; ?>" alt=" <?php echo $rowp->urunbaslik; ?>" width=" 370" height="450" />
+										<a class="view-full-screen" href="<?php echo site . "/uploads/product/" . $pim['resimdosya']; ?>" data-lightbox="roadtrip" data-title="<?php echo $rowp->urunbaslik; ?>">
 											<i class="zmdi zmdi-zoom-in"></i>
 										</a>
 									</div>
@@ -114,8 +114,8 @@ require_once 'inc/header.php'; ?>
 						<!-- Single-pro-slider Big-photo end -->
 						<div class="product-info">
 							<div class="fix">
-								<h4 class="post-title floatleft"><?php echo $row->urunbaslik; ?><b> Ürün Kodu:
-										<?php echo $row->urunkodu; ?>
+								<h4 class="post-title floatleft"><?php echo $rowp->urunbaslik; ?><b> Ürün Kodu:
+										<?php echo $rowp->urunkodu; ?>
 									</b></h4>
 
 							</div>
@@ -124,7 +124,7 @@ require_once 'inc/header.php'; ?>
 								<span class="pro-price">
 									<?php
 									if (@$bgift > 0) {
-										echo '<strike>' . $row->urunfiyat . '₺</strike> ' . $price . '₺';
+										echo '<strike>' . $rowp->urunfiyat . '₺</strike> ' . $price . '₺';
 									} else {
 										echo $price . '₺';
 									}
@@ -134,33 +134,37 @@ require_once 'inc/header.php'; ?>
 								</span>
 							</div>
 							<div class="product-description">
-								<p><?php echo strip_tags(mb_substr($row->urunicerik, 0, 1000, "utf8")); ?></p>
+								<p><?php echo strip_tags(mb_substr($rowp->urunicerik, 0, 1000, "utf8")); ?></p>
 							</div>
 
 							<div class="clearfix">
+								<?php if ($row->sitesiparisdurum == 1) { ?>
 
-								<form action="" method="POST" onsubmit="return false;" id="addCartForm">
 
-									<input type="number" value="1" name="qtybutton" class="cart-plus-minus-box" min="1" oninput="validity.valid||(value='1');">
-									<input type="hidden" value="<?php echo $row->urunkodu; ?>" name="pcode" class="cart-plus-minus-box">
+									<form action="" method="POST" onsubmit="return false;" id="addCartForm">
 
-									<div class="product-action clearfix">
+										<input type="number" value="1" name="qtybutton" class="cart-plus-minus-box" min="1" oninput="validity.valid||(value='1');">
+										<input type="hidden" value="<?php echo $rowp->urunkodu; ?>" name="pcode" class="cart-plus-minus-box">
 
-										<button onclick="addCart();" id="addCartt" class="btn btn-default" type="submit"><i class="zmdi zmdi-shopping-cart-plus"></i>Sepete Ekle</button>
-									</div>
-								</form>
+										<div class="product-action clearfix">
 
+											<button onclick="addCart();" id="addCartt" class="btn btn-default" type="submit"><i class="zmdi zmdi-shopping-cart-plus"></i>Sepete Ekle</button>
+										</div>
+									</form>
+								<?php } else {
+									alert('Websitemiz şuanda sipariş vermeye kapalıdır', 'warning');
+								} ?>
 							</div>
 							<div class="single-pro-slider single-sml-photo slider-nav">
 								<?php
 								$pimage = $db->prepare("SELECT resimurun,resimdosya,resimdurum,kapak FROM urun_resimler WHERE resimurun = :u");
 								$pimage->execute([
-									':u' => $row->urunkodu,
+									':u' => $rowp->urunkodu,
 								]);
 								if ($pimage->rowCount()) {
 									foreach ($pimage as $pimg) { ?>
 										<div>
-											<img width="70" height="83" src="<?php echo site . "/uploads/product/" . $pimg['resimdosya']; ?>" alt="<?php echo $row->urunbaslik; ?>" />
+											<img width="70" height="83" src="<?php echo site . "/uploads/product/" . $pimg['resimdosya']; ?>" alt="<?php echo $rowp->urunbaslik; ?>" />
 										</div>
 								<?php		}
 								}
@@ -194,9 +198,9 @@ require_once 'inc/header.php'; ?>
 						<div class="tab-content">
 							<div class="tab-pane active" id="description">
 								<div class="pro-tab-info pro-description">
-									<h3 class="tab-title title-border mb-30"><?php echo $row->urunbaslik; ?> Açıklaması</h3>
+									<h3 class="tab-title title-border mb-30"><?php echo $rowp->urunbaslik; ?> Açıklaması</h3>
 
-									<?php echo $row->urunicerik; ?>
+									<?php echo $rowp->urunicerik; ?>
 
 								</div>
 							</div>
@@ -204,7 +208,7 @@ require_once 'inc/header.php'; ?>
 							<div class="tab-pane " id="reviews">
 								<div class="pro-tab-info pro-reviews">
 									<div class="customer-review mb-60">
-										<h3 class="tab-title title-border mb-30"><?php echo $row->urunbaslik; ?>Ürün Yorumları (<?php echo $comments->rowCount() ?>) </h3>
+										<h3 class="tab-title title-border mb-30"><?php echo $rowp->urunbaslik; ?>Ürün Yorumları (<?php echo $comments->rowCount() ?>) </h3>
 										<?php
 										if ($comments->rowCount()) {
 											foreach ($comments as $comment) { ?>
@@ -243,7 +247,7 @@ require_once 'inc/header.php'; ?>
 													<div class="row">
 														<div class="col-md-12">
 															<textarea class="custom-textarea" name="commentcontent" placeholder="Yorum Yapınız..."></textarea>
-															<input type="hidden" name="productcode" value="<?php echo $row->urunkodu; ?>" />
+															<input type="hidden" name="productcode" value="<?php echo $rowp->urunkodu; ?>" />
 															<button type="submit" onclick="addNewComment();" id="addNewComentButon" class="button-one submit-button mt-20">submit review</button>
 														</div>
 													</div>
@@ -264,14 +268,14 @@ require_once 'inc/header.php'; ?>
 							</div>
 							<div class="tab-pane" id="information">
 								<div class="pro-tab-info pro-information">
-									<h3 class="tab-title title-border mb-30"><?php echo $row->urunbaslik; ?> Özellikleri</h3>
+									<h3 class="tab-title title-border mb-30"><?php echo $rowp->urunbaslik; ?> Özellikleri</h3>
 
 									<div class="table-responsive">
 										<table class="table table-hover">
 											<?php
 											$pskills = $db->prepare("SELECT * FROM urun_ozellikler WHERE ozellikurun = :ou AND ozellikdurum = :od");
 											$pskills->execute([
-												':ou' => $row->urunkodu,
+												':ou' => $rowp->urunkodu,
 												':od' => 1
 											]);
 											if ($pskills->rowCount()) {

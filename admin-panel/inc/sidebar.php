@@ -1,44 +1,112 @@
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
-    <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="https://randomuser.me/api/portraits/men/1.jpg" alt="User Image">
+    <div class="app-sidebar__user">
         <div>
-            <p class="app-sidebar__user-name">John Doe</p>
-            <p class="app-sidebar__user-designation">Frontend Developer</p>
+            <p class="app-sidebar__user-name"><?php echo $aname; ?></p>
         </div>
     </div>
     <ul class="app-menu">
-        <li><a class="app-menu__item active" href="dashboard.html"><i class="app-menu__icon bi bi-speedometer"></i><span class="app-menu__label">Dashboard</span></a></li>
-        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-laptop"></i><span class="app-menu__label">UI Elements</span><i class="treeview-indicator bi bi-chevron-right"></i></a>
+        <li><a class="app-menu__item active" href="<?php echo admin; ?>">
+                <i class="app-menu__icon bi bi-speedometer"></i>
+                <span class="app-menu__label">Ana Sayfa</span>
+            </a>
+        </li>
+
+        <li><a class="app-menu__item " href="#">
+                <i class="app-menu__icon bi bi-person"></i>
+                <span class="app-menu__label">Bayiler</span>
+            </a>
+        </li>
+
+
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-list"></i>
+                <span class="app-menu__label">Kategoriler</span><i class="treeview-indicator bi bi-chevron-right"></i></a>
             <ul class="treeview-menu">
-                <li><a class="treeview-item" href="bootstrap-components.html"><i class="icon bi bi-circle-fill"></i> Bootstrap Elements</a></li>
-                <li><a class="treeview-item" href="https://icons.getbootstrap.com/" target="_blank" rel="noopener"><i class="icon bi bi-circle-fill"></i> Font Icons</a></li>
-                <li><a class="treeview-item" href="ui-cards.html"><i class="icon bi bi-circle-fill"></i> Cards</a></li>
-                <li><a class="treeview-item" href="widgets.html"><i class="icon bi bi-circle-fill"></i> Widgets</a></li>
+
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i> Kategori Listesi </a></li>
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i> Yeni Kategori ekle</a></li>
             </ul>
         </li>
-        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-ui-checks"></i><span class="app-menu__label">Forms</span><i class="treeview-indicator bi bi-chevron-right"></i></a>
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-gift"></i>
+                <span class="app-menu__label">Ürünler</span><i class="treeview-indicator bi bi-chevron-right"></i></a>
             <ul class="treeview-menu">
-                <li><a class="treeview-item" href="form-components.html"><i class="icon bi bi-circle-fill"></i> Form Components</a></li>
-                <li><a class="treeview-item" href="form-samples.html"><i class="icon bi bi-circle-fill"></i> Form Samples</a></li>
+
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i> Ürün Listesi </a></li>
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i> Yeni Ürün ekle</a></li>
             </ul>
         </li>
-        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-table"></i><span class="app-menu__label">Tables</span><i class="treeview-indicator bi bi-chevron-right"></i></a>
+
+        <li><a class="app-menu__item " href="#">
+                <i class="app-menu__icon bi bi-bag-check-fill"></i>
+                <span class="app-menu__label">Siparişler</span>
+            </a>
+        </li>
+
+        <li><a class="app-menu__item " href="#">
+                <i class="app-menu__icon bi bi-basket"></i>
+                <span class="app-menu__label">Sepete eklenen ürünler</span>
+            </a>
+        </li>
+
+        <li><a class="app-menu__item " href="#">
+                <i class="app-menu__icon bi bi-megaphone"></i>
+                <span class="app-menu__label">Havale Bildirimleri</span>
+            </a>
+        </li>
+
+        <li><a class="app-menu__item " href="#">
+                <i class="app-menu__icon bi bi-chat-left-text"></i>
+                <span class="app-menu__label">Ürün Yorumları</span>
+            </a>
+        </li>
+
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-pen"></i>
+                <span class="app-menu__label">Sipariş Durum Kodları </span><i class="treeview-indicator bi bi-chevron-right"></i></a>
             <ul class="treeview-menu">
-                <li><a class="treeview-item" href="table-basic.html"><i class="icon bi bi-circle-fill"></i> Basic Tables</a></li>
-                <li><a class="treeview-item" href="table-data-table.html"><i class="icon bi bi-circle-fill"></i> Data Tables</a></li>
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i> Durum Kodu Listesi</a></li>
+
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i> Yeni Durum Kodu Ekle</a></li>
             </ul>
         </li>
-        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-file-earmark"></i><span class="app-menu__label">Pages</span><i class="treeview-indicator bi bi-chevron-right"></i></a>
+
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-bank"></i>
+                <span class="app-menu__label">Bankalar </span><i class="treeview-indicator bi bi-chevron-right"></i></a>
             <ul class="treeview-menu">
-                <li><a class="treeview-item" href="blank-page.html"><i class="icon bi bi-circle-fill"></i> Blank Page</a></li>
-                <li><a class="treeview-item" href="page-login.html"><i class="icon bi bi-circle-fill"></i> Login Page</a></li>
-                <li><a class="treeview-item" href="page-lockscreen.html"><i class="icon bi bi-circle-fill"></i> Lockscreen Page</a></li>
-                <li><a class="treeview-item" href="page-user.html"><i class="icon bi bi-circle-fill"></i> User Page</a></li>
-                <li><a class="treeview-item" href="page-invoice.html"><i class="icon bi bi-circle-fill"></i> Invoice Page</a></li>
-                <li><a class="treeview-item" href="page-mailbox.html"><i class="icon bi bi-circle-fill"></i> Mailbox</a></li>
-                <li><a class="treeview-item" href="page-error.html"><i class="icon bi bi-circle-fill"></i> Error Page</a></li>
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i> Banka Listesi</a></li>
+
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i> Yeni Banka Ekle</a></li>
             </ul>
         </li>
-        <li><a class="app-menu__item" href="docs.html"><i class="app-menu__icon bi bi-code-square"></i><span class="app-menu__label">Docs</span></a></li>
+
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-envelope"></i>
+                <span class="app-menu__label">Mesajlar </span><i class="treeview-indicator bi bi-chevron-right"></i></a>
+            <ul class="treeview-menu">
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i>Yeni Mesajlar</a></li>
+
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i> Geçmiş Mesajlar</a></li>
+            </ul>
+        </li>
+
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-file-earmark"></i>
+                <span class="app-menu__label">Sayfalar </span><i class="treeview-indicator bi bi-chevron-right"></i></a>
+            <ul class="treeview-menu">
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i>Sayfa Listesi</a></li>
+
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i> Yeni Sayfa ekle</a></li>
+            </ul>
+        </li>
+
+        <li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-gear"></i>
+                <span class="app-menu__label">Ayarlar </span><i class="treeview-indicator bi bi-chevron-right"></i></a>
+            <ul class="treeview-menu">
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i>Genel Ayarlar</a></li>
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i>Logo Ayarları</a></li>
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i>SMTP Ayarları</a></li>
+                <li><a class="treeview-item" href="#"><i class="icon bi bi-circle-fill"></i>İletişim Ayarları</a></li>
+            </ul>
+        </li>
+
+
+
     </ul>
 </aside>

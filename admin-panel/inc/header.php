@@ -4,6 +4,12 @@ if (@$_SESSION['adminlogin'] != @sha1(md5(IP() . $aid))) {
     go(admin . "/adminlogin.php");
 }
 
+$lastmessages = $db->prepare("SELECT * FROM mesajlar WHERE mesajdurum = :d
+ORDER BY id DESC LIMIT 10");
+$lastmessages->execute([
+    ':d' => 2
+]);
+
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +30,7 @@ if (@$_SESSION['adminlogin'] != @sha1(md5(IP() . $aid))) {
 
 <body class="app sidebar-mini">
     <!-- Navbar-->
-    <header class="app-header"><a class="app-header__logo" href="index.html">Vali</a>
+    <header class="app-header"><a class="app-header__logo" href="index.html">B2B</a>
         <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
         <!-- Navbar Right Menu-->
         <ul class="app-nav">
@@ -33,57 +39,39 @@ if (@$_SESSION['adminlogin'] != @sha1(md5(IP() . $aid))) {
                 <button class="app-search__button"><i class="bi bi-search"></i></button>
             </li>
             <!--Notification Menu-->
-            <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Show notifications"><i class="bi bi-bell fs-5"></i></a>
-                <ul class="app-notification dropdown-menu dropdown-menu-right">
-                    <li class="app-notification__title">You have 4 new notifications.</li>
-                    <div class="app-notification__content">
-                        <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><i class="bi bi-envelope fs-4 text-primary"></i></span>
-                                <div>
-                                    <p class="app-notification__message">Lisa sent you a mail</p>
-                                    <p class="app-notification__meta">2 min ago</p>
-                                </div>
-                            </a></li>
-                        <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><i class="bi bi-exclamation-triangle fs-4 text-warning"></i></span>
-                                <div>
-                                    <p class="app-notification__message">Mail server not working</p>
-                                    <p class="app-notification__meta">5 min ago</p>
-                                </div>
-                            </a></li>
-                        <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><i class="bi bi-cash fs-4 text-success"></i></span>
-                                <div>
-                                    <p class="app-notification__message">Transaction complete</p>
-                                    <p class="app-notification__meta">2 days ago</p>
-                                </div>
-                            </a></li>
-                        <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><i class="bi bi-envelope fs-4 text-primary"></i></span>
-                                <div>
-                                    <p class="app-notification__message">Lisa sent you a mail</p>
-                                    <p class="app-notification__meta">2 min ago</p>
-                                </div>
-                            </a></li>
-                        <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><i class="bi bi-exclamation-triangle fs-4 text-warning"></i></span>
-                                <div>
-                                    <p class="app-notification__message">Mail server not working</p>
-                                    <p class="app-notification__meta">5 min ago</p>
-                                </div>
-                            </a></li>
-                        <li><a class="app-notification__item" href="javascript:;"><span class="app-notification__icon"><i class="bi bi-cash fs-4 text-success"></i></span>
-                                <div>
-                                    <p class="app-notification__message">Transaction complete</p>
-                                    <p class="app-notification__meta">2 days ago</p>
-                                </div>
-                            </a></li>
-                    </div>
-                    <li class="app-notification__footer"><a href="#">See all notifications.</a></li>
-                </ul>
-            </li>
-            <!-- User Menu-->
-            <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i></a>
-                <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                    <li><a class="dropdown-item" href="page-user.html"><i class="bi bi-gear me-2 fs-5"></i> Settings</a></li>
-                    <li><a class="dropdown-item" href="page-user.html"><i class="bi bi-person me-2 fs-5"></i> Profile</a></li>
-                    <li><a class="dropdown-item" href="page-login.html"><i class="bi bi-box-arrow-right me-2 fs-5"></i> Logout</a></li>
-                </ul>
-            </li>
+            <?php if ($lastmessages->rowCount()) { ?>
+
+
+                <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Show notifications"><i class="bi bi-bell fs-5"></i></a>
+                    <ul class="app-notification dropdown-menu dropdown-menu-right">
+                        <li class="app-notification__title">Mesajlar (<?php echo $lastmessages->rowCount() ?>)</li>
+                        <div class="app-notification__content">
+                            <?php foreach ($lastmessages as $lm) { ?>
+                                <li><a class="app-notification__item" href="#">
+                                        <div>
+                                            <p class="app-notification__message"><?php echo $lm['mesajisim'] . " size mesaj yolladı"; ?></p>
+                                            <p class="app-notification__meta"><?php echo $lm['mesajkonu'] . " --- " . dt($lm['mesajtarih']); ?></p>
+                                        </div>
+                                    </a></li>
+                            <?php             } ?>
+
+
+                </li>
+            <?php  } else {
+                alert('Mesaj Bulunmuyor', 'danger');
+            } ?>
+            </div>
+            <li class="app-notification__footer"><a href="#">Tüm Yeni Mesajlar</a></li>
+        </ul>
+        </li>
+        <!-- User Menu-->
+        <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Open Profile Menu"><i class="bi bi-person fs-4"></i>
+                <?php echo $aname; ?></a>
+            <ul class="dropdown-menu settings-menu dropdown-menu-right">
+                <li><a class="dropdown-item" href="page-user.html"><i class="bi bi-person me-2 fs-5"></i> Profilim</a></li>
+                <li><a class="dropdown-item" href="page-user.html"><i class="bi bi-lock me-2 fs-5"></i> Şifemi Değiştir</a></li>
+                <li><a onclick="return confirm(' Çıkış yapmak istiyor musunuz ?');" class="dropdown-item" href="page-login.html"><i class="bi bi-box-arrow-right me-2 fs-5"></i> Çıkış Yap</a></li>
+            </ul>
+        </li>
         </ul>
     </header>

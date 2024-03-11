@@ -1,3 +1,5 @@
+<?php require_once 'systemadmin/function.php'; ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -18,46 +20,69 @@
   </section>
   <section class="login-content">
     <div class="logo">
-      <h1>Vali</h1>
+      <h1>B2B Admin Panel</h1>
     </div>
+    <?php
+    if (isset($_POST['adminlogin'])) {
+      $email = post('email');
+      $password = post('password');
+      $crypto = sha1(md5($password));
+      if (!$email || !$password) {
+        alert('Lütfen boş alan bırakma', 'danger');
+      } else {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+          alert('E-posta formatı hatalı', 'danger');
+        } else {
+          $alogin = $db->prepare("SELECT * FROM admin WHERE admin_posta = :p AND admin_sifre = :s ");
+          $alogin->execute([
+            ':p' => $email,
+            ':s' => $crypto
+          ]);
+          if ($alogin->rowCount()) {
+            $adminrow = $alogin->fetch(PDO::FETCH_OBJ);
+            if ($adminrow->admin_durum == 1) {
+
+              $_SESSION['adminlogin'] = sha1(md5(IP() . $adminrow->admin_id));
+              $_SESSION['adminid'] = $adminrow->admin_id;
+              alert('Yönetici girişi başarılı', 'success');
+
+              $logadd = $db->prepare("INSERT INTO adminlog SET 
+              alogadmin = :ad,
+              alogaciklama = :ac ");
+              $logadd->execute([
+                ':ad' => $adminrow->admin_id,
+                ':ac' => $adminrow->admin_id . " id'li yönetici girişi yaptı"
+              ]);
+
+
+              go(admin, 2);
+            } else {
+              alert('Yöneticiliğiniz pasife alındı', 'danger');
+            }
+          } else {
+            alert('Böyle bir yönetici bulunmuyor', 'danger');
+          }
+        }
+      }
+    }
+    ?>
     <div class="login-box">
-      <form class="login-form" action="index.html">
-        <h3 class="login-head"><i class="bi bi-person me-2"></i>SIGN IN</h3>
+      <form class="login-form" action="" method="POST">
+        <h3 class="login-head"><i class="bi bi-person me-2"></i>YÖNETİCİ GİRİŞİ</h3>
         <div class="mb-3">
-          <label class="form-label">USERNAME</label>
-          <input class="form-control" type="text" placeholder="Email" autofocus>
+          <label class="form-label">E-Posta</label>
+          <input class="form-control" name="email" type="text" placeholder="E-posta adresi" autofocus>
         </div>
         <div class="mb-3">
-          <label class="form-label">PASSWORD</label>
-          <input class="form-control" type="password" placeholder="Password">
+          <label class="form-label">Şifre</label>
+          <input class="form-control" type="password" placeholder="Şifre" name="password">
         </div>
-        <div class="mb-3">
-          <div class="utility">
-            <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox"><span class="label-text">Stay Signed in</span>
-              </label>
-            </div>
-            <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Forgot Password ?</a></p>
-          </div>
-        </div>
+
         <div class="mb-3 btn-container d-grid">
-          <button class="btn btn-primary btn-block"><i class="bi bi-box-arrow-in-right me-2 fs-5"></i>SIGN IN</button>
+          <button type="submit" name="adminlogin" class="btn btn-primary btn-block"><i class="bi bi-box-arrow-in-right me-2 fs-5"></i>Giriş Yap</button>
         </div>
       </form>
-      <form class="forget-form" action="index.html">
-        <h3 class="login-head"><i class="bi bi-person-lock me-2"></i>Forgot Password ?</h3>
-        <div class="mb-3">
-          <label class="form-label">EMAIL</label>
-          <input class="form-control" type="text" placeholder="Email">
-        </div>
-        <div class="mb-3 btn-container d-grid">
-          <button class="btn btn-primary btn-block"><i class="bi bi-unlock me-2 fs-5"></i>RESET</button>
-        </div>
-        <div class="mb-3 mt-3">
-          <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="bi bi-chevron-left me-1"></i> Back to Login</a></p>
-        </div>
-      </form>
+
     </div>
   </section>
 

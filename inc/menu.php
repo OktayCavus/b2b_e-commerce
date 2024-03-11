@@ -25,7 +25,7 @@ $cartinfo->execute([
                     <div class="mini-cart text-end">
                         <ul>
                             <li>
-                                <a class="cart-icon" href="cart">
+                                <a class="cart-icon" href=" <?php echo site; ?>/cart">
                                     <i class="zmdi zmdi-shopping-cart"></i>
                                     <span><?php
                                             echo  $cartinfo->rowCount();
