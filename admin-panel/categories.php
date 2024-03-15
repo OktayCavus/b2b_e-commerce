@@ -81,10 +81,12 @@
                     <td><a href=""> <?php echo $key['id']; ?></a></td>
                     <td><img src="<?php echo $site . "/uploads/product/" . $key['katresim']; ?>" width="100" height="100"></td>
                     <td><?php echo $key['katbaslik']; ?></td>
-                    <td><?php echo $key['katdurum'] == 1 ? '<span class="me-1 badge bg-success ">Aktif</span>' : '<span class="me-1 badge bg-danger">Pasif</span>'; ?></td>
+                    <td><?php echo $key['katdurum'] == 1 ? '<span class="me-1 badge bg-success ">Aktif</span>' : '<span class="me-1 badge bg-danger">Pasif</span>'; ?>
+                      <?php echo $key['silinmeyen_kat'] == 1 ? '<span class="me-1 badge bg-danger ">Silinmez Kategori</span>' : null; ?>
+                    </td>
                     <td>
                       <a title="Düzenle" href="" class="bi bi-pen"></a> |
-                      <a onclick="return confirm('Bu kategorideki tüm ürünler silinmez olarak seçilen kategoriye aktarılacak onaylıyor musunuz ?');" title="Sil" href="" class="bi bi-x-lg"></a> |
+                      <a onclick="return confirm('Bu kategorideki tüm ürünler silinmez olarak seçilen kategoriye aktarılacak onaylıyor musunuz ?');" title="Sil" href="<?php b2b('deletecategory', $key['id']); ?>" class="bi bi-x-lg"></a> |
 
                     </td>
                   </tr>

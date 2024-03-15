@@ -92,10 +92,8 @@
                     <td><?php echo dt($key['havaletarih']) . " | " . $key['havalesaat']; ?></td>
                     <td>
                       <a title="Düzenle" href="" class="bi bi-pen"></a> |
-                      <a title="Logo" href="" class="bi bi-camera"></a> |
-                      <a title="Log" href="" class="bi bi-list"></a> |
-                      <a title="Adres" href="" class="bi bi-geo-alt"></a> |
-                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="" class="bi bi-x-lg"></a>
+
+                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="<?php b2b("deletenotification", $key['id'], $key['havalebayi']) ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
                 <?php } ?>

@@ -38,7 +38,7 @@
         $blim = 50;
       }
 
-      $query = $db->prepare("SELECT * FROM urun_yorumlar
+      $query = $db->prepare("SELECT *,urun_yorumlar.id FROM urun_yorumlar
       INNER JOIN urunler ON urunler.urunkodu = urun_yorumlar.yorumurun
       ORDER BY urun_yorumlar.id DESC");
       $query->execute();
@@ -46,7 +46,7 @@
       $lim = $blim;
       $show = $s * $lim - $lim;
 
-      $query = $db->prepare("SELECT * FROM urun_yorumlar
+      $query = $db->prepare("SELECT *,urun_yorumlar.id FROM urun_yorumlar
       INNER JOIN urunler ON urunler.urunkodu = urun_yorumlar.yorumurun
       ORDER BY urun_yorumlar.id DESC LIMIT :show , :lim");
       $query->bindValue(':show', (int) $show, PDO::PARAM_INT);
@@ -89,7 +89,7 @@
                     <td><?php echo $key['yorumdurum'] == 1 ? '<span class="me-1 badge bg-success ">Onaylı</span>' : '<span class="me-1 badge bg-danger">Onay Bekliyor</span>'; ?></td>
                     <td>
                       <a title="Düzenle" href="" class="bi bi-pen"></a> |
-                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="" class="bi bi-x-lg"></a>
+                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="<?php b2b("commentdelete", $key['id']) ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
                 <?php } ?>

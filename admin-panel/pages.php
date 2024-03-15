@@ -67,7 +67,7 @@
                     <td><?php echo $key['durum'] == 1 ? '<span class="me-1 badge bg-success ">Aktif</span>' : '<span class="me-1 badge bg-danger">Pasif</span>'; ?></td>
                     <td>
                       <a title="Sayfa Düzenle" href="" class="bi bi-pen"></a> |
-                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sayfa sil" href="" class="bi bi-x-lg"></a>
+                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sayfa sil" href="<?php b2b("pagedelete", $key['id']) ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
                 <?php } ?>

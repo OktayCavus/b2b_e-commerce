@@ -96,7 +96,7 @@
                       <a title="Banner Resmi" href="" class="bi bi-card-image"></a> |
                       <a title="Özellikler" href="" class="bi bi-gear"></a> |
                       <a title="Ürün çoklu fotoğraf" href="" class="bi bi-images"></a> |
-                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Silf" href="" class="bi bi-x-lg"></a>
+                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Silf" href="<?php b2b("orderdelete", $key['sipariskodu']) ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
                 <?php } ?>

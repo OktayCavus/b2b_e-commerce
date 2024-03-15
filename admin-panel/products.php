@@ -84,7 +84,7 @@
                 <?php foreach ($query as $key) { ?>
                   <tr>
                     <td><a href=""> <?php echo $key['urunkodu']; ?></a></td>
-                    <td><img src="<?php echo site . "/uploads/product/" . $key['urunkapak'] ?>" alt=""> </td>
+                    <td><img src="<?php echo site . "/uploads/product/" . $key['urunkapak'] ?>" alt="" width="100" height="100"> </td>
                     <td><?php echo $key['urunbaslik']; ?></td>
                     <td><?php echo $key['katbaslik']; ?></td>
                     <td><?php echo $key['urunfiyat'] . "₺"; ?></td>
@@ -96,7 +96,7 @@
                       <a title="Banner Resmi" href="" class="bi bi-card-image"></a> |
                       <a title="Özellikler" href="" class="bi bi-gear"></a> |
                       <a title="Ürün çoklu fotoğraf" href="" class="bi bi-images"></a> |
-                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Silf" href="" class="bi bi-x-lg"></a>
+                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Silf" href="<?php b2b("deleteproduct", $key['urunkodu']) ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
                 <?php } ?>

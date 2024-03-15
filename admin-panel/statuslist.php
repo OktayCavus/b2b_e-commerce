@@ -64,10 +64,12 @@
                     <td><?php echo $key['durumbaslik']; ?></td>
                     <td><?php echo $key['durumkodu']; ?></td>
                     <td><?php echo dt($key['durumtarih']); ?></td>
-                    <td><?php echo $key['durumdurum'] == 1 ? '<span class="me-1 badge bg-success ">Aktif</span>' : '<span class="me-1 badge bg-danger">Pasif</span>'; ?></td>
+                    <td><?php echo $key['durumdurum'] == 1 ? '<span class="me-1 badge bg-success ">Aktif</span>' : '<span class="me-1 badge bg-danger">Pasif</span>'; ?>
+                      <?php echo $key['silinmeyen_durum'] == 1 ? '<span class="me-1 badge bg-danger ">Silinmez Durum</span>' : null; ?>
+                    </td>
                     <td>
                       <a title="Düzenle" href="" class="bi bi-pen"></a> |
-                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="" class="bi bi-x-lg"></a>
+                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="<?php b2b("statusdelete", $key['durumkodu']); ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
                 <?php } ?>

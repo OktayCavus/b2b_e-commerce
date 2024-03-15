@@ -86,11 +86,11 @@
                     <td><?php echo $key['bayidurum'] == 1 ? '<span class="me-1 badge bg-success ">Aktif</span>' : '<span class="me-1 badge bg-danger">Pasif</span>'; ?></td>
                     <td><?php echo "%" . $key['bayiindirim']; ?></td>
                     <td>
-                      <a title="Düzenle" href="" class="bi bi-pen"></a> |
-                      <a title="Logo" href="" class="bi bi-camera"></a> |
-                      <a title="Log" href="" class="bi bi-list"></a> |
-                      <a title="Adres" href="" class="bi bi-geo-alt"></a> |
-                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Bayi Pasif" href="" class="bi bi-x-lg"></a>
+                      <a title="Düzenle" href="<?php b2b("customeredit", $key['bayikodu']) ?>" class="bi bi-pen"></a> |
+                      <a title="Logo" href="<?php b2b("customerlogo", $key['bayikodu']) ?>" class="bi bi-camera"></a> |
+                      <a title="Log" href="<?php b2b("customerlog", $key['bayikodu']) ?>" class="bi bi-list"></a> |
+                      <a title="Adres" href="<?php b2b("customeraddress", $key['bayikodu']) ?>" class="bi bi-geo-alt"></a> |
+                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Bayi Pasif" href="<?php b2b('customerdelete', $key['bayikodu']) ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
                 <?php } ?>

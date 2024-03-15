@@ -90,7 +90,7 @@
                     <td><span class="me-1 badge bg-success ">Okundu</span></td>
                     <td>
                       <a title="Mesajı görüntüle" href="" class="bi bi-eye"></a> |
-                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="" class="bi bi-x-lg"></a>
+                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Eski Mesajları sil" href="<?php b2b("messagedelete", $key['id']) ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
                 <?php } ?>

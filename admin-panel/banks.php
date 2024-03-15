@@ -68,7 +68,7 @@
                     <td><?php echo dt($key['bankatarih']); ?></td>
                     <td>
                       <a title="Düzenle" href="" class="bi bi-pen"></a> |
-                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="" class="bi bi-x-lg"></a>
+                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Bankayı sil" href="<?php b2b('deletebank', $key['bankaid']) ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
                 <?php } ?>

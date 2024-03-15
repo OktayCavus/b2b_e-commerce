@@ -22,6 +22,7 @@ $lastmessages->execute([
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="//cdn.ckeditor.com/4.18.0/standard/ckeditor.js"></script>
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <!-- Font-icon css-->
