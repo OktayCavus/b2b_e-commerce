@@ -485,6 +485,168 @@ require_once "inc/header.php"; ?>
 
                     break;
 
+                case 'pageedit':
+
+                    $id = get('id');
+                    if (!$id) {
+                        go(admin);
+                    }
+
+                    $page = $db->prepare("SELECT * FROM sayfalar WHERE id=:id");
+                    $page->execute([':id' => $id]);
+                    if ($page->rowCount()) {
+
+                        $pagerow = $page->fetch(PDO::FETCH_OBJ);
+
+                        if (isset($_POST['upp'])) {
+
+                            $name   = post('pname');
+                            $seourl = post('purl');
+                            $status = post('status');
+
+
+                            if (!$seourl) {
+                                $sef = sef_link($name);
+                            } else {
+                                $sef = $seourl;
+                            }
+                            $pcontent   = $_POST['pcontent'];
+
+                            if (!$name  || !$pcontent || !$status) {
+                                alert("Tüm alanları doldurunuz", "danger");
+                            } else {
+
+                                $already = $db->prepare("SELECT id,sef FROM sayfalar WHERE sef=:k AND id !=:id");
+                                $already->execute([
+                                    ':k' => $sef,
+                                    ':id' => $id
+                                ]);
+                                if ($already->rowCount()) {
+                                    alert("Bu sayfa zaten kayıtlı", "danger");
+                                } else {
+
+                                    require_once 'inc/class.upload.php';
+                                    $image = new upload($_FILES['pimage']);
+                                    if ($image->uploaded) {
+
+                                        $rname = $sef . "-" . uniqid();
+                                        $image->allowed = array("image/*");
+                                        $image->file_new_name_body = $rname;
+                                        $image->file_max_size      = 1024 * 1024; //max 1 mb
+                                        $image->process("../uploads");
+
+                                        if ($image->processed) {
+
+                                            $upp  = $db->prepare("UPDATE sayfalar SET
+                                            baslik =:k,
+                                            sef    =:s,
+                                            icerik =:ke,
+                                            kapak  =:de,
+                                            durum  =:d WHERE id=:id
+                                        ");
+
+                                            $result = $upp->execute([
+                                                ':k' => $name,
+                                                ':s' => $sef,
+                                                ':ke' => $pcontent,
+                                                ':de' => $rname . '.png',
+                                                ':d' => $status,
+                                                ':id' => $id
+                                            ]);
+
+                                            @unlink("../uploads/" . $pagerow->kapak);
+                                        } else {
+                                            alert("Resim yüklenemedi", "danger");
+                                            print_r($image->error);
+                                        }
+                                    } else {
+
+                                        $upp  = $db->prepare("UPDATE sayfalar SET
+                                            baslik =:k,
+                                            sef    =:s,
+                                            icerik =:ke,
+                                            durum  =:d WHERE id=:id
+                                        ");
+
+                                        $result = $upp->execute([
+                                            ':k' => $name,
+                                            ':s' => $sef,
+                                            ':ke' => $pcontent,
+                                            ':d' => $status,
+                                            ':id' => $id
+                                        ]);
+                                    }
+
+
+                                    if ($result) {
+
+                                        alert("Sayfa güncellendi", "success");
+                                        go($_SERVER['HTTP_REFERER'], 2);
+                                    } else {
+                                        alert("Hata oluştu", "danger");
+                                        print_r($add->errorInfo());
+                                    }
+                                }
+                            }
+                        }
+                    ?>
+
+
+                        <div class="tile">
+                            <h3 class="tile-title"><?php echo $pagerow->baslik; ?> Adlı Sayfayı Düzenle</h3>
+                            <form action="" method="POST" enctype="multipart/form-data">
+                                <div class="tile-body">
+
+                                    <div class="form-group">
+                                        <label class="control-label">Sayfa Adı</label>
+                                        <input class="form-control" value="<?php echo $pagerow->baslik; ?>" name="pname" type="text" placeholder="Sayfa Adı">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">Sayfa SEO URL (örn: misyon-vizyon)</label>
+                                        <input class="form-control" value="<?php echo $pagerow->sef; ?>" name="purl" type="text" placeholder="Sayfa SEO URL">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">Sayfa Kapak Resim</label>
+                                        <img src="<?php echo $site . "/uploads/" . $pagerow->kapak; ?>" width="100" height="100" />
+                                        <span style="color:#b10021">Değiştirmek istemiyorsanız resim seçmeyiniz...</span>
+                                        <input class="form-control" type="file" name="pimage">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">Sayfa İçerik</label>
+                                        <textarea class="ckeditor" name="pcontent"><?php echo $pagerow->icerik; ?></textarea>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="control-label">Durum</label>
+                                        <select name="status" class="form-control">
+                                            <option value="1" <?php echo $pagerow->durum == 1 ? 'selected' : null; ?>>Aktif</option>
+                                            <option value="2" <?php echo $pagerow->durum != 1 ? 'selected' : null; ?>>Pasif</option>
+                                        </select>
+                                    </div>
+
+
+                                </div>
+                                <div class="tile-footer">
+                                    <button class="btn btn-primary" name="upp" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Kayıt Güncelle</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="<?php echo admin; ?>/pages.php"><i class="fa fa-fw fa-lg fa-times-circle"></i>Listeye Dön</a>
+                                </div>
+
+                            </form>
+
+
+                        </div>
+
+                    <?php
+
+                    } else {
+                        go(admin);
+                    }
+
+                    break;
+
                 case 'messagedetail':
                     $id = get('id');
                     if (!$id) {
