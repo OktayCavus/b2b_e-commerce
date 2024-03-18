@@ -149,6 +149,123 @@ require_once "inc/header.php"; ?>
 
                     break;
 
+                case 'notificationdetail':
+
+                    $id = get('id');
+                    if (!$id) {
+                        go(admin);
+                    }
+
+                    $notification = $db->prepare("SELECT * FROM havalebildirim WHERE id=:k");
+                    $notification->execute([':k' => $id]);
+                    if ($notification->rowCount()) {
+                        $notificationrow = $notification->fetch(PDO::FETCH_OBJ);
+
+                        #bayi bul 
+                        $bquery   = $db->prepare("SELECT bayikodu,bayiadi,bayimail FROM bayiler WHERE bayikodu=:k");
+                        $bquery->execute([':k' => $notificationrow->havalebayi]);
+                        $bqueryrow = $bquery->fetch(PDO::FETCH_OBJ);
+                        #bayi bul sonu
+
+
+                        #banka bul 
+                        $bankquery   = $db->prepare("SELECT bankaid,bankaadi FROM bankalar WHERE bankaid=:k");
+                        $bankquery->execute([':k' => $notificationrow->banka]);
+                        $bankqueryrow = $bankquery->fetch(PDO::FETCH_OBJ);
+                        #banka bul sonu
+
+                    ?>
+
+
+                        <div class="tile">
+                            <h3 class="tile-title"><?php echo $notificationrow->havalebayi; ?> Nolu bayiye ait havale bildirimi</h3>
+
+                            <div class="tile-body">
+
+                                <p><b>Bayi Kodu: </b><?php echo $notificationrow->havalebayi; ?></p>
+                                <p><b>Bayi Adı: </b><?php echo $bqueryrow->bayiadi; ?></p>
+                                <p><b>Havale Tarih: </b><?php echo date('d.m.Y', strtotime($notificationrow->havaletarih)); ?></p>
+                                <p><b>Havale Saat: </b><?php echo $notificationrow->havalesaat; ?></p>
+                                <p><b>Havale Tutarı: </b><?php echo $notificationrow->havaletutar . " ₺"; ?></p>
+                                <p><b>Havale Banka: </b><?php echo $bankqueryrow->bankaadi; ?></p>
+                                <p><b>Havale IP: </b><?php echo $notificationrow->havaleip; ?></p>
+                                <p><b>Havale Notu: </b> <?php echo $notificationrow->havalenot == "" ? "Belirtilmemiş" : $notificationrow->havalenot; ?></p>
+
+                                <hr />
+                                <?php
+
+                                if ($_POST) {
+
+                                    $title   = post('title');
+                                    $content = post('content');
+                                    $email   = post('email');
+
+                                    if (!$title || !$content || !$email) {
+                                        alert("Boş alan bırakmayınız", "danger");
+                                    } else {
+
+                                        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                                            alert("Geçersiz e-posta", "danger");
+                                        } else {
+
+                                            require_once 'inc/class.phpmailer.php';
+                                            require_once 'inc/class.smtp.php';
+
+                                            $mail = new PHPMailer();
+                                            $mail->Host       = $arow->smtphost;
+                                            $mail->Port       = $arow->smtpport;
+                                            $mail->SMTPSecure = $arow->smtpsec;
+                                            $mail->Username   = $arow->smtpmail;
+                                            $mail->Password   = $arow->smtpsifre;
+                                            $mail->SMTPAuth   = true;
+                                            $mail->IsSMTP();
+                                            $mail->AddAddress($email);
+
+                                            $mail->From       = $arow->smtpmail;
+                                            $mail->FromName   = $title;
+                                            $mail->CharSet    = 'UTF-8';
+                                            $mail->Subject    = $title;
+                                            $mailcontent      = "
+                            <p>" . $content . "</p>
+                            
+                            ";
+
+                                            $mail->MsgHTML($mailcontent);
+                                            if ($mail->Send()) {
+                                                alert("Mail başarıyla gönderildi", "success");
+                                                go($_SERVER['HTTP_REFERER'], 2);
+                                            } else {
+                                                alert("Hata oluştu", "danger");
+                                            }
+                                        }
+                                    }
+                                }
+
+                                ?>
+                                <form action="" method="POST">
+                                    <input type="text" name="title" class="form-control" placeholder="Mail başlığı" />
+                                    <textarea name="content" class="form-control" rows="6" placeholder="Mail İçeriği"></textarea>
+                                    <input type="hidden" value="<?php echo $bqueryrow->bayimail; ?>" name="email" />
+                                    <button type="submit" class="btn btn-primary">Mail Gönder</button>
+                                </form>
+
+
+                            </div>
+                            <div class="tile-footer">
+                                <a class="btn btn-secondary" href="<?php echo admin; ?>/notifications.php"><i class="fa fa-fw fa-lg fa-times-circle"></i>Listeye Dön</a>
+                            </div>
+
+
+                        </div>
+
+                    <?php
+
+                    } else {
+                        go(admin);
+                    }
+
+                    break;
+
                 case 'orderupdate':
                     if ($_POST) {
 

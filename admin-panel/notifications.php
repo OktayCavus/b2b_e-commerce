@@ -91,7 +91,7 @@
                     <td><?php echo $key['bankaadi']; ?></td>
                     <td><?php echo dt($key['havaletarih']) . " | " . $key['havalesaat']; ?></td>
                     <td>
-                      <a title="Düzenle" href="" class="bi bi-pen"></a> |
+                      <a title="Düzenle" href="<?php b2b("notificationdetail", $key['id']) ?>" class="bi bi-eye"></a> |
 
                       <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="<?php b2b("deletenotification", $key['id'], $key['havalebayi']) ?>" class="bi bi-x-lg"></a>
                     </td>
