@@ -278,6 +278,100 @@ require_once "inc/header.php"; ?>
                     }
                     break;
 
+                case 'statusedit':
+                    $id = get('id');
+                    if (!$id) {
+                        go(admin);
+                    }
+
+                    $status = $db->prepare("SELECT * FROM durumkodlari WHERE id=:id");
+                    $status->execute([':id' => $id]);
+                    if ($status->rowCount()) {
+
+                        $statusrow = $status->fetch(PDO::FETCH_OBJ);
+
+                        if (isset($_POST['up'])) {
+
+                            $name  = post('name');
+                            $code  = post('code');
+                            $stat  = post('stat');
+
+                            if (!$name || !$code || !$stat) {
+                                alert('Lütfen boş alan bırakmayınız', 'danger');
+                            } else {
+
+                                $already = $db->prepare("SELECT id,durumkodu FROM durumkodlari WHERE durumkodu=:k AND id !=:id");
+                                $already->execute([':k' => $code, ':id' => $id]);
+                                if ($already->rowCount()) {
+
+                                    alert("Böyle bir durum zaten kayıtlı", "danger");
+                                } else {
+
+                                    $up = $db->prepare("UPDATE durumkodlari SET
+                                            durumbaslik =:b,
+                                            durumkodu   =:k,
+                                            durumdurum  =:d WHERE id=:id 
+                                        ");
+                                    $result  = $up->execute([
+                                        ':b' => $name,
+                                        ':k' => $code,
+                                        ':d' => $stat,
+                                        ':id' => $id
+                                    ]);
+                                    if ($result) {
+                                        alert("Durum başarıyla güncellendi", "success");
+                                        go($_SERVER['HTTP_REFERER'], 2);
+                                    } else {
+                                        alert("Hata oluştu", "danger");
+                                    }
+                                }
+                            }
+                        }
+                    ?>
+
+                        <div class="tile">
+                            <h3 class="tile-title"><?php echo $statusrow->durumbaslik; ?> Adlı Durumu Düzenle</h3>
+                            <form action="" method="POST" enctype="multipart/form-data">
+                                <div class="tile-body">
+
+                                    <div class="form-group">
+                                        <label class="control-label">Durum Başlık</label>
+                                        <input value="<?php echo $statusrow->durumbaslik; ?>" class="form-control" name="name" type="text" placeholder="Durum Başlık">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">Durum Kodu</label>
+                                        <input value="<?php echo $statusrow->durumkodu; ?>" class="form-control" name="code" type="text" placeholder="Durum Kodu">
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="control-label">Durum ( Aktif/Pasif )</label>
+                                        <select name="stat" class="form-control">
+
+                                            <option value="1" <?php echo $statusrow->durumdurum == 1 ? 'selected' : null; ?>>Aktif</option>
+                                            <option value="2" <?php echo $statusrow->durumdurum != 1 ? 'selected' : null; ?>>Pasif</option>
+
+                                        </select>
+                                    </div>
+
+
+                                </div>
+                                <div class="tile-footer">
+                                    <button class="btn btn-primary" name="up" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Kayıt Güncelle</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="<?php echo admin; ?>/statuslist.php"><i class="fa fa-fw fa-lg fa-times-circle"></i>Listeye Dön</a>
+                                </div>
+
+                            </form>
+
+
+                        </div>
+                    <?php
+
+                    } else {
+                        go(admin);
+                    }
+                    break;
+
 
                 case 'notificationdetail':
 

@@ -68,7 +68,7 @@
                       <?php echo $key['silinmeyen_durum'] == 1 ? '<span class="me-1 badge bg-danger ">Silinmez Durum</span>' : null; ?>
                     </td>
                     <td>
-                      <a title="Düzenle" href="" class="bi bi-pen"></a> |
+                      <a title="Düzenle" href="<?php b2b("statusedit", $key['id']); ?>" class="bi bi-pen"></a> |
                       <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="<?php b2b("statusdelete", $key['durumkodu']); ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>

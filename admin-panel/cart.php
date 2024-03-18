@@ -79,7 +79,7 @@
                     <td><?php echo $key['toplam']; ?></td>
                     <td><?php echo dt($key['sepettarih']); ?></td>
                     <td>
-                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="<?php b2b("deletecart", $key['sepeturun'], $key['sepetbayi']) ?>" class="bi bi-x-lg"></a>
+                      <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="<?php b2b("deletecart", $key['sepeturun'], $key['sepetbayi']); ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
                 <?php } ?>
