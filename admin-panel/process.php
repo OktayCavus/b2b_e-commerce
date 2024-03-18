@@ -149,6 +149,136 @@ require_once "inc/header.php"; ?>
 
                     break;
 
+                case 'commentdetail':
+                    $id = get('id');
+                    if (!$id) {
+                        go(admin);
+                    }
+
+                    $comments = $db->prepare("SELECT * FROM urun_yorumlar 
+                            INNER JOIN urunler ON urunler.urunkodu = urun_yorumlar.yorumurun
+                        WHERE urun_yorumlar.id=:id");
+                    $comments->execute([':id' => $id]);
+                    if ($comments->rowCount()) {
+
+                        $commentrow = $comments->fetch(PDO::FETCH_OBJ);
+                    ?>
+
+
+                        <div class="tile">
+                            <h3 class="tile-title"><?php echo $commentrow->urunbaslik; ?> adlı ürüne yapılan yorum</h3>
+
+                            <div class="tile-body">
+
+                                <p><b>Ürün Kodu: </b><?php echo $commentrow->yorumurun; ?></p>
+                                <p><b>Ürün Adı: </b><a href="<?php echo $site . "/product/" . $commentrow->urunsef; ?>" target="_blank"><?php echo $commentrow->urunbaslik; ?></a></p>
+                                <p><b>Bayi Adı: </b><?php echo $commentrow->yorumisim; ?></p>
+                                <p><b>Tarih: </b><?php echo dt($commentrow->yorumtarih); ?></p>
+                                <p><b>IP: </b><?php echo $commentrow->yorumip; ?></p>
+                                <p><b>Yorum: </b><?php echo $commentrow->yorumicerik; ?></p>
+
+
+
+
+
+                            </div>
+                            <div class="tile-footer">
+
+                                <?php if ($commentrow->yorumdurum == 1) { ?>
+
+                                    <a onclick="return confirm('onaylıyor musunuz?');" class="btn btn-danger" href="<?php b2b('commentpassive', $id); ?>"><i class="fa fa-fw fa-lg fa-times-circle"></i>Onayı kaldır</a>
+
+
+                                <?php } else { ?>
+
+                                    <a onclick="return confirm('onaylıyor musunuz?');" class="btn btn-success" href="<?php b2b('commentactive', $id); ?>"><i class="fa fa-fw fa-lg fa fa-check"></i>Onayla</a>
+
+                                <?php } ?>
+
+                                <a onclick="return confirm('onaylıyor musunuz?');" class="btn btn-warning" href="<?php b2b('commentdelete', $id); ?>"><i class="fa fa-fw fa-lg fa-times-circle"></i>Yorumu sil</a>
+
+                                <a class="btn btn-secondary" href="<?php echo admin; ?>/comments.php"><i class="fa fa-fw fa-lg fa-times-circle"></i>Listeye Dön</a>
+                            </div>
+
+
+                        </div>
+
+                    <?php
+
+                    } else {
+                        go(admin);
+                    }
+                    break;
+
+                case 'commentactive':
+                    $id = get('id');
+                    if (!$id) {
+                        go(admin);
+                    }
+
+                    $query = $db->prepare("SELECT id FROM urun_yorumlar WHERE id=:b");
+                    $query->execute([':b' => $id]);
+                    if ($query->rowCount()) {
+                        $up = $db->prepare("UPDATE urun_yorumlar SET yorumdurum=:d WHERE id=:b");
+                        $result = $up->execute([':d' => 1, ':b' => $id]);
+                        if ($result) {
+                            alert('Ürün yorumu onaylandı', 'success');
+                            go($_SERVER['HTTP_REFERER'], 2);
+                        } else {
+                            alert('Hata oluştu', 'danger');
+                        }
+                    } else {
+                        go(admin);
+                    }
+                    break;
+
+
+                case 'commentpassive':
+                    $id = get('id');
+                    if (!$id) {
+                        go(admin);
+                    }
+
+                    $query = $db->prepare("SELECT id FROM urun_yorumlar WHERE id=:b");
+                    $query->execute([':b' => $id]);
+                    if ($query->rowCount()) {
+                        $up = $db->prepare("UPDATE urun_yorumlar SET yorumdurum=:d WHERE id=:b");
+                        $result = $up->execute([':d' => 2, ':b' => $id]);
+                        if ($result) {
+                            alert('Ürün yorumu pasife alındı', 'success');
+                            go($_SERVER['HTTP_REFERER'], 2);
+                        } else {
+                            alert('Hata oluştu', 'danger');
+                        }
+                    } else {
+                        go(admin);
+                    }
+                    break;
+
+
+                case 'commentdelete':
+                    $code = get('id');
+                    if (!$code) {
+                        go(admin);
+                    }
+
+                    $query = $db->prepare("SELECT id FROM urun_yorumlar WHERE id=:b");
+                    $query->execute([':b' => $code]);
+                    if ($query->rowCount()) {
+                        $delete = $db->prepare("DELETE FROM urun_yorumlar WHERE id=:b");
+                        $result = $delete->execute([':b' => $code]);
+                        if ($result) {
+                            alert('Ürün yorumu silindi', 'success');
+                            go(admin . "/comments.php", 2);
+                        } else {
+                            alert('Hata oluştu', 'danger');
+                        }
+                    } else {
+                        go(admin);
+                    }
+                    break;
+
+
                 case 'notificationdetail':
 
                     $id = get('id');

@@ -81,14 +81,14 @@
 
                 <?php foreach ($query as $key) { ?>
                   <tr>
-                    <td><a href=""> <?php echo $key['id']; ?></a></td>
+                    <td><a href="<?php b2b("commentdetail", $key['id']) ?>"> <?php echo $key['id']; ?></a></td>
                     <td><?php echo $key['yorumurun']; ?></td>
                     <td><?php echo $key['yorumisim']; ?></td>
                     <td><?php echo dt($key['yorumtarih']); ?></td>
                     <td><?php echo $key['yorumip']; ?></td>
                     <td><?php echo $key['yorumdurum'] == 1 ? '<span class="me-1 badge bg-success ">Onaylı</span>' : '<span class="me-1 badge bg-danger">Onay Bekliyor</span>'; ?></td>
                     <td>
-                      <a title="Düzenle" href="" class="bi bi-pen"></a> |
+                      <a title="Düzenle" href="<?php b2b("commentdetail", $key['id']) ?>" class="bi bi-eye"></a> |
                       <a onclick="return confirm('Onaylıyor musunuz ?');" title="Sepetten sil" href="<?php b2b("commentdelete", $key['id']) ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
