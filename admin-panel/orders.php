@@ -85,17 +85,14 @@
 
                 <?php foreach ($query as $key) { ?>
                   <tr>
-                    <td><a href=""> <?php echo $key['sipariskodu']; ?></a></td>
+                    <td><a href="<?php b2b("orderdetail", $key['sipariskodu']) ?>"> <?php echo $key['sipariskodu']; ?></a></td>
                     <td><?php echo $key['bayiadi']; ?></td>
                     <td><?php echo $key['siparistel']; ?></td>
                     <td><?php echo dt($key['siparistarih']) . " |" . $key['siparissaat']; ?></td>
                     <td><?php echo $key['siparistutar'] . "₺"; ?></td>
                     <td><?php echo $key['durumbaslik']; ?></td>
                     <td>
-                      <a title="Düzenle" href="" class="bi bi-pen"></a> |
-                      <a title="Banner Resmi" href="" class="bi bi-card-image"></a> |
-                      <a title="Özellikler" href="" class="bi bi-gear"></a> |
-                      <a title="Ürün çoklu fotoğraf" href="" class="bi bi-images"></a> |
+                      <a title="Siparişi görüntüle" href="<?php b2b("orderdetail", $key['sipariskodu']) ?>" class="bi bi-eye"></a> |
                       <a onclick="return confirm('Onaylıyor musunuz ?');" title="Silf" href="<?php b2b("orderdelete", $key['sipariskodu']) ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>

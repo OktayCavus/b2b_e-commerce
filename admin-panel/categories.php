@@ -85,7 +85,7 @@
                       <?php echo $key['silinmeyen_kat'] == 1 ? '<span class="me-1 badge bg-danger ">Silinmez Kategori</span>' : null; ?>
                     </td>
                     <td>
-                      <a title="Düzenle" href="" class="bi bi-pen"></a> |
+                      <a title="Düzenle" href="<?php b2b('categoryedit', $key['id']) ?>" class="bi bi-pen"></a> |
                       <a onclick="return confirm('Bu kategorideki tüm ürünler silinmez olarak seçilen kategoriye aktarılacak onaylıyor musunuz ?');" title="Sil" href="<?php b2b('deletecategory', $key['id']); ?>" class="bi bi-x-lg"></a> |
 
                     </td>

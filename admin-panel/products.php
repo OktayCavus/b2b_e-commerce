@@ -92,10 +92,10 @@
                     <td><?php echo $key['urundurum'] == 1 ? '<span class="me-1 badge bg-success ">Aktif</span>' : '<span class="me-1 badge bg-danger">Pasif</span>'; ?></td>
 
                     <td>
-                      <a title="Düzenle" href="" class="bi bi-pen"></a> |
-                      <a title="Banner Resmi" href="" class="bi bi-card-image"></a> |
-                      <a title="Özellikler" href="" class="bi bi-gear"></a> |
-                      <a title="Ürün çoklu fotoğraf" href="" class="bi bi-images"></a> |
+                      <a title="Düzenle" href="<?php b2b("productedit", $key['urunkodu']) ?>" class="bi bi-pen"></a> |
+                      <a title="Banner Resmi" href="<?php b2b("productbanner", $key['urunkodu']) ?>" class="bi bi-card-image"></a> |
+                      <a title="Özellikler" href="<?php b2b("productskill", $key['urunkodu']) ?>" class="bi bi-gear"></a> |
+                      <a title="Ürün çoklu fotoğraf" href="<?php b2b("productphotos", $key['urunkodu']) ?>" class="bi bi-images"></a> |
                       <a onclick="return confirm('Onaylıyor musunuz ?');" title="Silf" href="<?php b2b("deleteproduct", $key['urunkodu']) ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>
