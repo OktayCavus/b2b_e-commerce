@@ -67,7 +67,7 @@
                     <td><?php echo $key['bankadurum'] == 1 ? '<span class="me-1 badge bg-success ">Aktif</span>' : '<span class="me-1 badge bg-danger">Pasif</span>'; ?></td>
                     <td><?php echo dt($key['bankatarih']); ?></td>
                     <td>
-                      <a title="Düzenle" href="" class="bi bi-pen"></a> |
+                      <a title="Düzenle" href="<?php b2b('bankedit', $key['bankaid']); ?>" class="bi bi-pen"></a> |
                       <a onclick="return confirm('Onaylıyor musunuz ?');" title="Bankayı sil" href="<?php b2b('deletebank', $key['bankaid']); ?>" class="bi bi-x-lg"></a>
                     </td>
                   </tr>

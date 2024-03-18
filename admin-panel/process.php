@@ -372,6 +372,214 @@ require_once "inc/header.php"; ?>
                     }
                     break;
 
+                case 'bankedit':
+
+                    $id = get('id');
+                    if (!$id) {
+                        go(admin);
+                    }
+
+                    $bank = $db->prepare("SELECT * FROM bankalar WHERE bankaid=:id");
+                    $bank->execute([':id' => $id]);
+                    if ($bank->rowCount()) {
+
+                        $bankrow = $bank->fetch(PDO::FETCH_OBJ);
+
+                        if (isset($_POST['upp'])) {
+
+                            $name   = post('name');
+                            $hno    = post('hno');
+                            $sname  = post('sname');
+                            $iban   = post('iban');
+                            $status = post('status');
+
+                            if (!$iban || !$name || !$hno || !$sname || !$status) {
+
+                                alert("Boş alan bırakmayınız", "danger");
+                            } else {
+
+                                $already = $db->prepare("SELECT bankaid,bankaiban FROM bankalar WHERE bankaiban=:k AND bankaid !=:id");
+                                $already->execute([':k' => $iban, ':id' => $id]);
+                                if ($already->rowCount()) {
+                                    alert("Bu banka hesabı zaten kayıtlı", "danger");
+                                } else {
+
+                                    $upp = $db->prepare("UPDATE bankalar SET
+                                            bankaadi     =:b,
+                                            bankahesap   =:k,
+                                            bankasube    =:s,
+                                            bankaiban    =:i,
+                                            bankadurum   =:d WHERE bankaid=:id
+                                        ");
+
+                                    $result = $upp->execute([
+                                        ':b' => $name,
+                                        ':k' => $hno,
+                                        ':s' => $sname,
+                                        ':i' => $iban,
+                                        ':d' => $status,
+                                        ':id' => $id
+                                    ]);
+
+                                    if ($result) {
+                                        alert("Banka hesabı güncellendi", "success");
+                                        go($_SERVER['HTTP_REFERER'], 2);
+                                    } else {
+                                        alert("Hata oluştu", "danger");
+                                    }
+                                }
+                            }
+                        }
+                    ?>
+
+
+                        <div class="tile">
+                            <h3 class="tile-title"><?php echo $bankrow->bankaadi; ?> Adlı Bankayı Güncelle</h3>
+                            <form action="" method="POST" enctype="multipart/form-data">
+                                <div class="tile-body">
+
+                                    <div class="form-group">
+                                        <label class="control-label">Banka Adı</label>
+                                        <input value="<?php echo $bankrow->bankaadi; ?>" class="form-control" name="name" type="text" placeholder="Banka adı">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">Hesap No</label>
+                                        <input value="<?php echo $bankrow->bankahesap; ?>" class="form-control" name="hno" type="text" placeholder="Hesap No">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">Şube Adı/No</label>
+                                        <input value="<?php echo $bankrow->bankasube; ?>" class="form-control" name="sname" type="text" placeholder="Şube Adı ya da şube no">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label">IBAN</label>
+                                        <input value="<?php echo $bankrow->bankaiban; ?>" class="form-control" name="iban" type="text" placeholder="IBAN">
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="control-label">Durum</label>
+                                        <select name="status" class="form-control">
+                                            <option value="1" <?php echo $bankrow->bankadurum == 1 ? 'selected' : null; ?>>Aktif</option>
+                                            <option value="2" <?php echo $bankrow->bankadurum != 1 ? 'selected' : null; ?>>Pasif</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="tile-footer">
+                                    <button class="btn btn-primary" name="upp" type="submit"><i class="fa fa-fw fa-lg fa-check-circle"></i>Kayıt Güncelle</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-secondary" href="<?php echo admin; ?>/banks.php"><i class="fa fa-fw fa-lg fa-times-circle"></i>Listeye Dön</a>
+                                </div>
+
+                            </form>
+
+
+                        </div>
+
+                    <?php
+
+                    } else {
+                        go(admin);
+                    }
+
+                    break;
+
+                case 'messagedetail':
+                    $id = get('id');
+                    if (!$id) {
+                        go(admin);
+                    }
+
+                    $message = $db->prepare("SELECT * FROM mesajlar WHERE id=:id");
+                    $message->execute([':id' => $id]);
+                    if ($message->rowCount()) {
+
+                        $messagerow = $message->fetch(PDO::FETCH_OBJ);
+
+                        $up = $db->prepare("UPDATE mesajlar SET mesajdurum=:d WHERE id=:id");
+                        $up->execute([':d' => 1, ':id' => $id]);
+                    ?>
+
+                        <div class="tile">
+                            <h3 class="tile-title"><?php echo $messagerow->mesajisim; ?> adlı kişinin mesajı</h3>
+
+                            <div class="tile-body">
+
+                                <p><b>İsim: </b><?php echo $messagerow->mesajisim; ?></p>
+                                <p><b>E-posta: </b><a href="mailto:<?php echo $messagerow->mesajposta; ?>" target="_blank"><?php echo $messagerow->mesajposta; ?></a></p>
+                                <p><b>Konu: </b><?php echo $messagerow->mesajkonu; ?></p>
+                                <p><b>Tarih: </b><?php echo dt($messagerow->mesajtarih); ?></p>
+                                <p><b>IP: </b><?php echo $messagerow->mesajip; ?></p>
+                                <p><b>İçerik: </b><?php echo $messagerow->mesajicerik; ?></p>
+
+                                <hr />
+                                <?php
+                                if (isset($_POST['reply'])) {
+                                    $content = post('content');
+                                    $email   = post('email');
+
+                                    if (!$content || !$email) {
+                                        alert("Boş alan bırakmayınız", "danger");
+                                    } else {
+
+                                        require_once 'inc/class.phpmailer.php';
+                                        require_once 'inc/class.smtp.php';
+                                        $mail = new PHPMailer();
+                                        $mail->Host       = $arow->smtphost;
+                                        $mail->Port       = $arow->smtpport;
+                                        $mail->SMTPSecure = $arow->smtpsec;
+                                        $mail->Username   = $arow->smtpmail;
+                                        $mail->Password   = $arow->smtpsifre;
+                                        $mail->SMTPAuth   = true;
+                                        $mail->IsSMTP();
+                                        $mail->AddAddress($email);
+
+                                        $mail->From       = $arow->smtpmail;
+                                        $mail->FromName   = $messagerow->mesajkonu;
+                                        $mail->CharSet    = 'UTF-8';
+                                        $mail->Subject    = $messagerow->mesajkonu . " - Adlı mesajınıza yanıt verildi";
+                                        $mailcontent      = "
+                                        <p>" . $content . "</p>
+                                        
+                                        ";
+
+                                        $mail->MsgHTML($mailcontent);
+                                        if ($mail->Send()) {
+                                            alert("Yanıtınız başarıyla gönderildi", "success");
+                                            go($_SERVER['HTTP_REFERER'], 2);
+                                        } else {
+                                            alert("Hata oluştu", "danger");
+                                        }
+                                    }
+                                }
+                                ?>
+                                <form action="" method="POST">
+                                    <textarea class="form-control" name="content" rows="7" placeholder="Mesaj yanıtınız"></textarea>
+                                    <input type="hidden" value="<?php echo $messagerow->mesajposta; ?>" name="email" />
+                                    <button type="submit" name="reply" class="btn btn-success">Mesajı Yanıtla</button>
+                                </form>
+
+
+
+                            </div>
+                            <div class="tile-footer">
+
+
+
+                                <a class="btn btn-secondary" href="<?php echo @$_SERVER['HTTP_REFERER']; ?>"><i class="fa fa-fw fa-lg fa-times-circle"></i>Listeye Dön</a>
+                            </div>
+
+
+                        </div>
+
+                    <?php
+
+                    } else {
+                        go(admin);
+                    }
+                    break;
+
 
                 case 'notificationdetail':
 

@@ -35,32 +35,32 @@ $lastmessages->execute([
         <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
         <!-- Navbar Right Menu-->
         <ul class="app-nav">
-            <li class="app-search">
-                <input class="app-search__input" type="search" placeholder="Search">
-                <button class="app-search__button"><i class="bi bi-search"></i></button>
-            </li>
+
             <!--Notification Menu-->
-            <?php if ($lastmessages->rowCount()) { ?>
 
 
-                <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Show notifications"><i class="bi bi-bell fs-5"></i></a>
-                    <ul class="app-notification dropdown-menu dropdown-menu-right">
+
+            <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown" aria-label="Show notifications"><i class="bi bi-bell fs-5"></i></a>
+                <ul class="app-notification dropdown-menu dropdown-menu-right">
+                    <?php if ($lastmessages->rowCount()) { ?>
                         <li class="app-notification__title">Mesajlar (<?php echo $lastmessages->rowCount() ?>)</li>
                         <div class="app-notification__content">
                             <?php foreach ($lastmessages as $lm) { ?>
-                                <li><a class="app-notification__item" href="#">
+                                <li>
+                                    <a class="app-notification__item" href="<?php b2b("messagedetail", $lm['id']); ?>">
                                         <div>
                                             <p class="app-notification__message"><?php echo $lm['mesajisim'] . " size mesaj yolladı"; ?></p>
                                             <p class="app-notification__meta"><?php echo $lm['mesajkonu'] . " --- " . dt($lm['mesajtarih']); ?></p>
                                         </div>
-                                    </a></li>
+                                    </a>
+                                </li>
                             <?php             } ?>
 
+                        <?php  } else {
+                        alert('Mesaj Bulunmuyor', 'danger');
+                    } ?>
+            </li>
 
-                </li>
-            <?php  } else {
-                alert('Mesaj Bulunmuyor', 'danger');
-            } ?>
             </div>
             <li class="app-notification__footer"><a href="#">Tüm Yeni Mesajlar</a></li>
         </ul>
